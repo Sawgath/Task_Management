@@ -1,6 +1,8 @@
 package com.Jahan.Task_Management.helperModel;
 
 
+//helper model for mapping entity User model
+
 public class UserHelper {
 	
 	

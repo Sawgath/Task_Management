@@ -14,11 +14,12 @@ import com.Jahan.Task_Management.helperModel.UserHelper;
 public class LoginHelper {
 	
 	@Autowired
-	UserRepository repository;
+	UserRepository userRepos;
 	
+	//User's Name and password checking.
 	public String CheckUser(UserHelper aUserHelper){
 		
-		List<User> UserList = repository.findByuserName(aUserHelper.userName);
+		List<User> UserList = userRepos.findByuserName(aUserHelper.userName);
 		
 		if(UserList.size()==1) 
 		{
@@ -26,7 +27,7 @@ public class LoginHelper {
 			{
 				if(auser.getpassword().equals(aUserHelper.getpassword()))
 				{
-					//success
+					//Matched password for user.
 					return "Success";
 				}
 			}
@@ -35,28 +36,26 @@ public class LoginHelper {
 		return "Fail";
 	}
 	
+	
+	//helper function for saving user info to database.
 	public void saveUser(UserHelper aUserHelper){
-		
-		
 		
 		if(!aUserHelper.userName.equals("") && !aUserHelper.email.equals("") && !aUserHelper.password.equals("") && aUserHelper.role>0) 
 		{
 			User aUser=new User(aUserHelper.userName,aUserHelper.password,aUserHelper.email,aUserHelper.role);
 
-			repository.save(aUser);
+			userRepos.save(aUser);
 		}
 	
 	}
 	
 	
+	//helper function for deleting user entity from database.
 	public void DeleteUser(long id){
-		
-		
-		
+
 		if(id!=0) 
-		{
-			
-			repository.delete(id);
+		{	
+			userRepos.delete(id);
 		}
 	
 	}

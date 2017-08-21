@@ -9,13 +9,15 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.Jahan.Task_Management.helper.LoginHelper;
 import com.Jahan.Task_Management.helperModel.UserHelper;
 import com.Jahan.Task_Management.model.User;
 import com.Jahan.Task_Management.repo.UserRepository;
+
+
+//UserManage Controller for adding user's or deleting user's or updating user's info
 
 @Controller
 public class UserManageController {
@@ -26,6 +28,7 @@ public class UserManageController {
 	@Autowired
 	LoginHelper aloginhelper;
 	
+	//For getting list of User
 	@RequestMapping(value="/ListofUser",method=RequestMethod.GET)
 	public String findAll(Model model){
 		
@@ -45,18 +48,19 @@ public class UserManageController {
 		return "/Product/UserList";
 	}
 	
+	
+	//To delete single user.
 	@RequestMapping(value="/deleteUser",method=RequestMethod.POST)
 	public ModelAndView deleteUser(Model model,@ModelAttribute("DelUser") String userID){
 		
 		long num=Long.parseLong(userID);
 		aloginhelper.DeleteUser(num);
-		////////////////////////
-		
-		
 		
 		return new ModelAndView("redirect:/ListofUser");
 	}
 	
+	
+	//To add single user.
 	@RequestMapping(value="/addUser",method=RequestMethod.POST)
 	public ModelAndView addUser(@ModelAttribute("aUser") UserHelper aUser){
 		
