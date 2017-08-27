@@ -24,8 +24,7 @@ public class LoginController {
 	UserRepository userrepo;
 	
 	
-	@Autowired
-	LoginHelper aloginhelper;
+	
 	
 	
 	@RequestMapping(value="/Login",method=RequestMethod.GET)
@@ -44,6 +43,7 @@ public class LoginController {
 	public ModelAndView process(@ModelAttribute("aUser") UserHelper aUser){
 	
 		
+		LoginHelper aloginhelper = new LoginHelper();
 		String atext= aloginhelper.CheckUser(aUser);
 		
 		if(atext.equals("Success"))
