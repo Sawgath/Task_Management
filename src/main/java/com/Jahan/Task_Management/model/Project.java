@@ -34,7 +34,6 @@ public class Project implements Serializable {
 	@Column(name = "projectEndTime")
 	private Date projectEndTime;
 	
-	
 	public Project() {
 	}
  

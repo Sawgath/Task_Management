@@ -36,4 +36,13 @@ public class ProjectHelper {
 
 			}
 		}
+		
+		public void DeleteProject(long id){
+
+			if(id!=0) 
+			{	
+				projectRepository.delete(id);
+			}
+		
+		}
 }
