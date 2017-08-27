@@ -1,7 +1,5 @@
 package com.Jahan.Task_Management.model;
-
 import java.io.Serializable;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,7 +8,6 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 //Entity model for user_tb of TaskManagementDb
-
 @Entity
 @Table(name = "user_tb")
 public class User implements Serializable {

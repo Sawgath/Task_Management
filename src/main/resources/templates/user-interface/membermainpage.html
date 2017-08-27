@@ -1,0 +1,47 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/ui-darkness/jquery-ui.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="css/site.css"/>
+	<title>Task Management</title>
+</head>
+<body>
+
+    <div class="container">
+	    <div class="page-header">
+	        <h1><b>Welcome </b> <b th:text="${aUser.getuserName()}">Name</b></h1>
+	    </div>
+	    <table class="table table-hover">
+	        <tr align="center">
+	            <td><form class="form-horizontal" action="http://localhost:8080/" method="post">
+	            <input type="hidden" name="aUser" id="aUser"  th:value="${aUser.getuserId()}" />
+	            <input type="submit" class="btn btn-primary btn-lg" style="width: 800px;" value="Create a Project" th:name= "${aUser.getuserId()}"/>
+	            </form>
+	            </td>
+	        </tr>
+	        <tr align="center">
+	            <td><form class="form-horizontal" action="http://localhost:8080/" method="post">
+	            <input type="hidden" name="aUser" id="aUser"  th:value="${aUser.getuserId()}" />
+	            <input type="submit" class="btn btn-primary btn-lg" style="width: 800px;" value="Add or Delete User" th:name= "${aUser.getuserId()}"/>
+	            </form>
+	            </td>
+	        </tr >
+	        <tr align="center">
+	            <td><form class="form-horizontal" action="http://localhost:8080/" method="post">
+	            <input type="hidden" name="aUser" id="aUser"  th:value="${aUser.getuserId()}" />
+	            <input type="submit" class="btn btn-primary btn-lg" style="width: 800px;" value="Change User Info" th:name= "${aUser.getuserId()}"/>
+	            </form>
+	            </td>
+	        </tr>
+		
+	    </table>
+    </div>
+<script src="http://code.jquery.com/jquery-1.12.4.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="js/site.js"></script>
+</body>
+</html>

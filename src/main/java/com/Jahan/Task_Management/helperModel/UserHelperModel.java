@@ -3,7 +3,7 @@ package com.Jahan.Task_Management.helperModel;
 
 //helper model for mapping entity User model
 
-public class UserHelper {
+public class UserHelperModel {
 	
 	
 	public long userId;
@@ -18,6 +18,16 @@ public class UserHelper {
 	
 
 	public int role;
+	
+	
+	public long getuserId() {
+		return userId;
+	}
+	
+	public void setuserId(long userId) {
+		this.userId = userId;
+	}
+ 
 	
 	public String getuserName() {
 		return userName;

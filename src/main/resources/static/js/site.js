@@ -1,11 +1,19 @@
 function setPicker(){
-    $( "#datepicker" ).datepicker(
+    $( "#projectStartTime" ).datepicker(
         { dateFormat: 'yy-mm-dd',
             onSelect: function(d,i) {
                 if (d !== i.lastVal) {
-                    reloadPageForDateSelection();
+                    
                 }
             }
+        });
+    $( "#projectEndTime" ).datepicker(
+            { dateFormat: 'yy-mm-dd',
+                onSelect: function(d,i) {
+                    if (d !== i.lastVal) {
+                        
+                    }
+                }
         });
 };
 
@@ -20,16 +28,10 @@ function setInitialDate(){
     }else{
         requestDate = formatDate(requestDate);
     }
-    $('#datepicker').datepicker('setDate', requestDate);
-
+    $('#projectStartTime').datepicker('setDate', requestDate);
+    $('#projectEndTime').datepicker('setDate', requestDate);
 };
 
-function reloadPageForDateSelection(){
-    var selectedDate = document.getElementById('datepicker').value;
-    var redirectLink = window.location.protocol + "//" + window.location.host + window.location.pathname + '?date=' + selectedDate;
-    console.log('Redirecting to: ' + redirectLink);
-    window.location.href = redirectLink;
-};
 
 function formatDate(input) {
     var dateFormat = 'yyyy-mm-dd';
