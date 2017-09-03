@@ -1,7 +1,6 @@
 package com.Jahan.Task_Management.controller;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
-
 import com.Jahan.Task_Management.helper.ProjectHelper;
 import com.Jahan.Task_Management.helperModel.ProjectHelperModel;
 import com.Jahan.Task_Management.helperModel.UserHelperModel;
@@ -24,7 +22,6 @@ import com.Jahan.Task_Management.repo.UserRepository;
 @SessionAttributes("UserSession")
 @Controller
 public class ProjectManageController {
-	
 	@Autowired
 	ProjectRepository ProjectRepositoryT;
 	@Autowired
@@ -59,6 +56,7 @@ public class ProjectManageController {
 		model.addAttribute("projectList",projectList);
 		return "/project-interface/listofproject";
 	}
+	
 	//To delete single user.
 	@RequestMapping(value="/deleteProject",method=RequestMethod.POST)
 	public ModelAndView deleteUser(Model model,@ModelAttribute("delProject") String projectID){
@@ -66,5 +64,4 @@ public class ProjectManageController {
 		projectHelper.DeleteProject(num);
 		return new ModelAndView("redirect:/ListofProject");
 	}
-	
 }

@@ -1,5 +1,4 @@
 package com.Jahan.Task_Management.helper;
-
 import com.Jahan.Task_Management.model.User;
 import com.Jahan.Task_Management.repo.UserRepository;
 
@@ -12,12 +11,11 @@ import com.Jahan.Task_Management.helperModel.UserHelperModel;
 
 @Component
 public class LoginHelper {
-	
 	@Autowired
 	UserRepository userRepository;
 	
 	//User's Name and password checking.
-	public String CheckUser(UserHelperModel aUserHelper){
+	public String checkUser(UserHelperModel aUserHelper){
 		
 		List<User> UserList = userRepository.findByuserName(aUserHelper.userName);
 		
@@ -66,15 +64,12 @@ public class LoginHelper {
 	
 	}
 	
-	
 	//helper function for deleting user entity from database.
-	public void DeleteUser(long id){
+	public void deleteUser(long id){
 
 		if(id!=0) 
 		{	
 			userRepository.delete(id);
 		}
-	
 	}
-
 }

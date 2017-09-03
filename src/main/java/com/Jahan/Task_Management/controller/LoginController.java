@@ -34,7 +34,7 @@ public class LoginController {
 	public ModelAndView process(Model model, @ModelAttribute("aUser") UserHelperModel aUser){
 		String aText="";
 		if(LoginHelperT!=null) {
-			aText= LoginHelperT.CheckUser(aUser);
+			aText= LoginHelperT.checkUser(aUser);
 		}
 		if(aText.equals("Success"))
 		{

@@ -20,29 +20,29 @@ public class ProjectHelper {
 	ProjectRepository projectRepository;
 	
 	//helper function for saving user info to database.
-		public void saveProject(ProjectHelperModel aProjectHelper){
-			
-			if(!aProjectHelper.projectName.equals("") && !aProjectHelper.projectStartTime.equals("") && !aProjectHelper.projectEndTime.equals("")) 
-			{
-				SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-				try {
-		            Date projectStartTime = formatter.parse(aProjectHelper.projectStartTime);
-		            Date projectEndTime = formatter.parse(aProjectHelper.projectEndTime);
-		            Project aProject=new Project(aProjectHelper.projectName,aProjectHelper.projectDescription,projectStartTime,projectEndTime);
-		            projectRepository.save(aProject);
-		        } catch (ParseException e) {
-		            e.printStackTrace();
-		        }
-
-			}
-		}
+	public void saveProject(ProjectHelperModel aProjectHelper){
 		
-		public void DeleteProject(long id){
+		if(!aProjectHelper.projectName.equals("") && !aProjectHelper.projectStartTime.equals("") && !aProjectHelper.projectEndTime.equals("")) 
+		{
+			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+			try {
+	            Date projectStartTime = formatter.parse(aProjectHelper.projectStartTime);
+	            Date projectEndTime = formatter.parse(aProjectHelper.projectEndTime);
+	            Project aProject=new Project(aProjectHelper.projectName,aProjectHelper.projectDescription,projectStartTime,projectEndTime);
+	            projectRepository.save(aProject);
+	        } catch (ParseException e) {
+	            e.printStackTrace();
+	        }
 
-			if(id!=0) 
-			{	
-				projectRepository.delete(id);
-			}
-		
 		}
+	}
+	
+	public void DeleteProject(long id){
+
+		if(id!=0) 
+		{	
+			projectRepository.delete(id);
+		}
+	
+	}
 }

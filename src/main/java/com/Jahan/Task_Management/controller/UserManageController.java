@@ -50,7 +50,7 @@ public class UserManageController {
 	@RequestMapping(value="/deleteUser",method=RequestMethod.POST)
 	public ModelAndView deleteUser(Model model,@ModelAttribute("DelUser") String userID){
 		long num=Long.parseLong(userID);
-		LoginHelperT.DeleteUser(num);
+		LoginHelperT.deleteUser(num);
 		return new ModelAndView("redirect:/ListofUser");
 	}
 	

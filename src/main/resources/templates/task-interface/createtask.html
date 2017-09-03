@@ -1,0 +1,75 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/ui-darkness/jquery-ui.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="css/site.css"/>
+	<title>Task Management</title>
+</head>
+<body>
+    <div class="container">
+	    <div class="page-header">
+	        <h1>New Task</h1>
+	    </div>
+    		<form class="form-horizontal" action="#" th:action="@{/NewTask}" th:object="${aTask}" method="post">
+    			<div class="form-group">
+    				<label class="col-sm-2 control-label">Select Project :</label>
+    				<div class="col-sm-10">
+				    <select class="form-control" th:field="*{projectId}">
+				    		<option value= "0" >None</option>
+						     <option th:each="aProject : ${allProject}"
+						             th:value="${aProject.projectId}"
+						             th:text="${aProject.projectName}">
+     						 </option>
+					</select>
+					</div>
+				</div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Task Name :</label>
+                    <div class="col-sm-10">
+                    <input type="text" class="form-control" th:field="*{taskName}"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Description :</label>
+                    <div class="col-sm-10">
+                    <input type="text" class="form-control" th:field="*{taskDescription}"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Goal :</label>
+                    <div class="col-sm-10">
+                    <input type="text" class="form-control" th:field="*{taskGoal}"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Task start Time :</label>
+                    <div class="col-sm-10">
+                    <div class="input-group">
+        			<span class="input-group-addon" id="basic-addon1"><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span></span>
+        			<input type="text" class="form-control" id="taskStartTime" name="taskStartTime" th:value="*{taskStartTime}" aria-describedby="basic-addon1"/>
+    				</div>
+    				</div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Task end Time :</label>
+                    <div class="col-sm-10">
+                    <div class="input-group">
+        			<span class="input-group-addon" id="basic-addon1"><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span></span>
+        			<input type="text" class="form-control" id="taskEndTime" name="taskEndTime" th:value="*{taskEndTime}" aria-describedby="basic-addon1"/>
+    				</div>
+    				</div>
+                </div>
+	 			<div class="row">
+	                <button type="submit" class="btn btn-default">Submit</button>
+	            </div>
+         	</form>
+    </div>   
+<script src="http://code.jquery.com/jquery-1.12.4.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="js/task-site.js"></script>
+</body>
+</html>
