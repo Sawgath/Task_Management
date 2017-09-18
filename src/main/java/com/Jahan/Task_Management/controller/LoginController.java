@@ -51,4 +51,13 @@ public class LoginController {
 			return null;
 		}
 	}
+	
+	 /** Login form with error. */
+    @RequestMapping("/login-error")
+    public String loginError(Model model) {
+    	UserHelperModel aUser=new UserHelperModel();
+		model.addAttribute("aUser",aUser);
+        model.addAttribute("loginError", true);
+        return "/login/login";
+    }
 }

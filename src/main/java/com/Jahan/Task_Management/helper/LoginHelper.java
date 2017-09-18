@@ -5,6 +5,7 @@ import com.Jahan.Task_Management.repo.UserRepository;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import com.Jahan.Task_Management.helperModel.UserHelperModel;
@@ -13,6 +14,8 @@ import com.Jahan.Task_Management.helperModel.UserHelperModel;
 public class LoginHelper {
 	@Autowired
 	UserRepository userRepository;
+	@Autowired
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
 	
 	//User's Name and password checking.
 	public String checkUser(UserHelperModel aUserHelper){
@@ -62,6 +65,18 @@ public class LoginHelper {
 			userRepository.save(aUser);
 		}
 	
+	}
+	
+	public User findUserByEmail(String email) {
+			return userRepository.findByEmail(email);
+	}
+	
+	
+	public void saveAUser(User user) {
+	 		user.setpassword(bCryptPasswordEncoder.encode(user.getpassword()));
+	 		user.setrole(2);
+	 		userRepository.save(user);
+		
 	}
 	
 	//helper function for deleting user entity from database.
