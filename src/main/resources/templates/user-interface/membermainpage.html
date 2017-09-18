@@ -16,21 +16,36 @@
 	    </div>
 	    <table class="table table-hover">
 	        <tr align="center">
-	            <td><form class="form-horizontal" action="http://localhost:8080/" method="post">
+	            <td><form class="form-horizontal" th:action="@{/CreateProject}" method="post">
 	            <input type="hidden" name="aUser" id="aUser"  th:value="${aUser.getuserId()}" />
 	            <input type="submit" class="btn btn-primary btn-lg" style="width: 800px;" value="Create a Project" th:name= "${aUser.getuserId()}"/>
 	            </form>
 	            </td>
 	        </tr>
 	        <tr align="center">
-	            <td><form class="form-horizontal" action="http://localhost:8080/" method="post">
+	            <td><form class="form-horizontal" th:action="@{/ListofProject}" method="get">
+	            <input type="hidden" name="aUser" id="aUser"  th:value="${aUser.getuserId()}" />
+	            <input type="submit" class="btn btn-primary btn-lg" style="width: 800px;" value="List of Project" th:name= "${aUser.getuserId()}"/>
+	            </form>
+	            </td>
+	        </tr>
+	        
+	        <tr align="center">
+	            <td><form class="form-horizontal" th:action="@{/CreateTask}"  method="post">
+	            <input type="hidden" name="aUser" id="aUser"  th:value="${aUser.getuserId()}" />
+	            <input type="submit" class="btn btn-primary btn-lg" style="width: 800px;" value="Create a Task" th:name= "${aUser.getuserId()}"/>
+	            </form>
+	            </td>
+	        </tr>
+	        <tr align="center">
+	            <td><form class="form-horizontal" th:action="@{/ListofUser}"  method="get">
 	            <input type="hidden" name="aUser" id="aUser"  th:value="${aUser.getuserId()}" />
 	            <input type="submit" class="btn btn-primary btn-lg" style="width: 800px;" value="Add or Delete User" th:name= "${aUser.getuserId()}"/>
 	            </form>
 	            </td>
 	        </tr >
 	        <tr align="center">
-	            <td><form class="form-horizontal" action="http://localhost:8080/" method="post">
+	            <td><form class="form-horizontal" th:action="@{/NewProject}"  method="get">
 	            <input type="hidden" name="aUser" id="aUser"  th:value="${aUser.getuserId()}" />
 	            <input type="submit" class="btn btn-primary btn-lg" style="width: 800px;" value="Change User Info" th:name= "${aUser.getuserId()}"/>
 	            </form>

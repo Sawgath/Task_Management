@@ -32,6 +32,7 @@ public class UserManageController {
 		model.addAttribute("aUser",aUser);
 		model.addAttribute("DelUser",str);
 		List<User> userList= new ArrayList<User>();
+		model.addAttribute("Error",false);
 		for(User cust : UserRepositoryT.findAll()){
 			userList.add(cust);
 		}
@@ -54,10 +55,7 @@ public class UserManageController {
 		return new ModelAndView("redirect:/ListofUser");
 	}
 	
-	//To add single user.
-	@RequestMapping(value="/addUser",method=RequestMethod.POST)
-	public ModelAndView addUser(@ModelAttribute("aUser") UserHelperModel aUser){
-		LoginHelperT.saveUser(aUser);
-		return new ModelAndView("redirect:/ListofUser");
-	}
+	
+	
+	
 }

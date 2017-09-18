@@ -1,10 +1,14 @@
 package com.Jahan.Task_Management.model;
 import java.io.Serializable;
+import java.util.Set;
+import javax.persistence.*;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import org.hibernate.validator.constraints.Email;
@@ -30,13 +34,32 @@ public class User implements Serializable {
 	@Email(message = "*Please provide a valid Email")
 	@NotEmpty(message = "*Please provide an email")
 	private String email;
-	@Column(name = "role")
-	private int role;
+	@Column(name = "active")
+	private int active;
+	public int getActive() {
+		return active;
+	}
+
+	public void setActive(int active) {
+		this.active = active;
+	}
+
+	@Column(name = "role", nullable = false)
+	@Enumerated(EnumType.STRING)
+	private Role role;
 	
 	public User() {
 	}
  
-	public User(String userName, String password,String email,int role) {
+	public Role getrole() {
+		return role;
+	}
+
+	public void setrole(Role role) {
+		this.role = role;
+	}
+
+	public User(String userName, String password,String email,Role role) {
 		this.userName = userName;
 		this.password = password;
 		this.email=email;
@@ -71,18 +94,9 @@ public class User implements Serializable {
 		this.email = email;
 	}
 	
-	
-	public int getrole() {
-		return role;
-	}
-
-	public void setrole(int role) {
-		this.role = role;
-	}
-	
 	@Override
 	public String toString() {
 		return String.format("User[userName='%s', email='%s']",userName, email);
 	}
-
+	
 }

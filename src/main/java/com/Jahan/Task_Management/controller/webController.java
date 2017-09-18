@@ -1,22 +1,39 @@
 package com.Jahan.Task_Management.controller;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.net.ssl.HttpsURLConnection;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import org.springframework.validation.BindingResult;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
 import org.unbescape.html.HtmlEscape;
 
+import com.Jahan.Task_Management.config.SecurityConfiguration;
 import com.Jahan.Task_Management.helper.LoginHelper;
 import com.Jahan.Task_Management.helperModel.UserHelperModel;
+import com.Jahan.Task_Management.model.Role;
 import com.Jahan.Task_Management.model.User;
 import com.Jahan.Task_Management.repo.UserRepository;
+
+
+
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
+import javax.net.ssl.HttpsURLConnection;
 /*
 	Test Controller for manipulating user data
 */
@@ -26,13 +43,17 @@ public class webController {
 	UserRepository userRepository;
 	@Autowired
 	LoginHelper LoginHelperT;
+	@Autowired
+	SecurityConfiguration SecurityConfigurationT;
 	@RequestMapping("/save")
 	public String process(){
-		userRepository.save(new User("Admin","123","Admin@yahoo.com",1));
-		userRepository.save(new User("Admin2", "123","admin2@yahoo.com",1));
-		userRepository.save(new User("Creep1", "123","Creep1@yahoo.com",2));
-		userRepository.save(new User("Creep3", "123","Creep3@yahoo.com",3));
-		userRepository.save(new User("Noob","123","Creep3@yahoo.com",3));
+		
+		BCryptPasswordEncoder aBCryptPasswordEncoder=SecurityConfigurationT.passwordEncoder();
+		userRepository.save(new User("Admin",aBCryptPasswordEncoder.encode("123"),"Admin@yahoo.com",Role.ADMIN));
+		userRepository.save(new User("Admin2",aBCryptPasswordEncoder.encode("123"),"admin2@yahoo.com",Role.ADMIN));
+		userRepository.save(new User("Boss",aBCryptPasswordEncoder.encode("123"),"Boss@yahoo.com",Role.MANAGER));
+		userRepository.save(new User("Creep1",aBCryptPasswordEncoder.encode("123"),"Creep1@yahoo.com",Role.STAFF));
+		userRepository.save(new User("Creep2",aBCryptPasswordEncoder.encode("123"),"Creep2@yahoo.com",Role.STAFF));
 		return "Done";
 	}
 	
@@ -102,4 +123,17 @@ public class webController {
     public String forbidden() {
         return "/error-interface/403";
     }
+    
+    
+    /*
+     * testing api
+     */
+    
+    
+    @RequestMapping("/API")
+    public void APIFunction() {
+    	
+  
+    }
+    
 }

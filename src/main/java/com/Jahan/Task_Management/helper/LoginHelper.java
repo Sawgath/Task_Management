@@ -1,13 +1,16 @@
 package com.Jahan.Task_Management.helper;
+import com.Jahan.Task_Management.model.Role;
 import com.Jahan.Task_Management.model.User;
 import com.Jahan.Task_Management.repo.UserRepository;
 
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
+import com.Jahan.Task_Management.config.SecurityConfiguration;
 import com.Jahan.Task_Management.helperModel.UserHelperModel;
 
 @Component
@@ -15,10 +18,12 @@ public class LoginHelper {
 	@Autowired
 	UserRepository userRepository;
 	@Autowired
-	private BCryptPasswordEncoder bCryptPasswordEncoder;
+	private SecurityConfiguration SecurityConfigurationT;
 	
 	//User's Name and password checking.
 	public String checkUser(UserHelperModel aUserHelper){
+		
+		BCryptPasswordEncoder aBCryptPasswordEncoder=SecurityConfigurationT.passwordEncoder();
 		
 		List<User> UserList = userRepository.findByuserName(aUserHelper.userName);
 		
@@ -26,18 +31,35 @@ public class LoginHelper {
 		{
 			for(User auser : UserList)
 			{
-				if(auser.getpassword().equals(aUserHelper.getpassword()))
+				if(aBCryptPasswordEncoder.matches(aUserHelper.getpassword(),auser.getpassword()))
 				{
 					//Matched password for user.
 					return "Success";
 				}
 			}
 		}
-	
 		return "Fail";
 	}
 	
+	public boolean checkUniqueNameEmail(String name,String email){
+		
+		List<User> UserList1 = userRepository.findByuserName(name);
+		List<User> UserList2 = userRepository.findByemail(email);
+		if(UserList1.size()>0) 
+		{ 
+			return false;			
+		}
+		
+		if(UserList2.size()>0) 
+		{ 
+			return false;			
+		}
+		
+		return true;
+	}
+	
 	public long getUserId(UserHelperModel aUserHelper){
+		BCryptPasswordEncoder aBCryptPasswordEncoder=SecurityConfigurationT.passwordEncoder();
 		
 		List<User> UserList = userRepository.findByuserName(aUserHelper.userName);
 		
@@ -45,7 +67,7 @@ public class LoginHelper {
 		{
 			for(User auser : UserList)
 			{
-				if(auser.getpassword().equals(aUserHelper.getpassword()))
+				if(aBCryptPasswordEncoder.matches(aUserHelper.getpassword(),auser.getpassword()))
 				{
 					//Matched password for user.
 					return auser.getuserId();
@@ -56,27 +78,35 @@ public class LoginHelper {
 	}
 	
 	//helper function for saving user info to database.
-	public void saveUser(UserHelperModel aUserHelper){
+	public boolean saveUser(UserHelperModel aUserHelper){
 		
-		if(!aUserHelper.userName.equals("") && !aUserHelper.email.equals("") && !aUserHelper.password.equals("") && aUserHelper.role>0) 
+		if(checkUniqueNameEmail(aUserHelper.getuserName(),aUserHelper.getemail())==true) 
 		{
-			User aUser=new User(aUserHelper.userName,aUserHelper.password,aUserHelper.email,aUserHelper.role);
-
-			userRepository.save(aUser);
+			if(!aUserHelper.userName.equals("") && !aUserHelper.email.equals("") && !aUserHelper.password.equals("")) 
+			{
+				User aUser=new User(aUserHelper.userName,aUserHelper.password,aUserHelper.email,aUserHelper.role);
+				aUser.setpassword(new BCryptPasswordEncoder().encode(aUserHelper.getpassword()));
+				aUser.setrole(Role.STAFF);
+				userRepository.save(aUser);
+				
+				return true;
+			}
 		}
-	
+		return false;
 	}
 	
 	public User findUserByEmail(String email) {
 			return userRepository.findByEmail(email);
 	}
-	
-	
-	public void saveAUser(User user) {
-	 		user.setpassword(bCryptPasswordEncoder.encode(user.getpassword()));
-	 		user.setrole(2);
+
+	public void saveAUser(User user) {	
+		if(checkUniqueNameEmail(user.getuserName(),user.getemail())==true) 
+		{
+			BCryptPasswordEncoder aBCryptPasswordEncoder=SecurityConfigurationT.passwordEncoder();
+	 		user.setpassword(aBCryptPasswordEncoder.encode(user.getpassword()));
+	 		user.setrole(Role.MANAGER);
 	 		userRepository.save(user);
-		
+		}
 	}
 	
 	//helper function for deleting user entity from database.

@@ -3,6 +3,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
@@ -22,6 +23,18 @@ public class LoginController {
 	@Autowired
 	LoginHelper LoginHelperT;
 	
+	@RequestMapping(value= {"/", "/home"},method=RequestMethod.GET)
+	public String indexPage(){
+		
+		// return view of the login page.
+		return "/login/index";
+	}
+	@RequestMapping(value= {"/{accountNumber}"},method=RequestMethod.GET)
+	public String indexPage2(@PathVariable final int accountNumber){
+		
+		// return view of the login page.
+		return "public number "+accountNumber;
+	}
 	@RequestMapping(value="/Login",method=RequestMethod.GET)
 	public String Login(Model model){
 		UserHelperModel aUser=new UserHelperModel();
@@ -48,7 +61,7 @@ public class LoginController {
 		}
 		else
 		{
-			return null;
+			return new ModelAndView("redirect:/login-error");
 		}
 	}
 	

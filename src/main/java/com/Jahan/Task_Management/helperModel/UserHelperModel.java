@@ -1,5 +1,6 @@
 package com.Jahan.Task_Management.helperModel;
 
+import com.Jahan.Task_Management.model.Role;
 
 //helper model for mapping entity User model
 
@@ -17,7 +18,7 @@ public class UserHelperModel {
 	public String email;
 	
 
-	public int role;
+	public Role role;
 	
 	
 	public long getuserId() {
@@ -54,11 +55,11 @@ public class UserHelperModel {
 	}
 	
 	
-	public int getrole() {
+	public Role getrole() {
 		return role;
 	}
 
-	public void setrole(int role) {
+	public void setrole(Role role) {
 		this.role = role;
 	}
 
