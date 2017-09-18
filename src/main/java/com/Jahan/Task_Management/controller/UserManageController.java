@@ -55,6 +55,15 @@ public class UserManageController {
 		return new ModelAndView("redirect:/ListofUser");
 	}
 	
+	//To add single user.
+		@RequestMapping(value="/addUser",method=RequestMethod.POST)
+		public ModelAndView addUser(@ModelAttribute("aUser") UserHelperModel aUser,Model model){
+			boolean temp = LoginHelperT.saveUser(aUser);
+			if(temp) return new ModelAndView("redirect:/ListofUser");
+			else return new ModelAndView("redirect:/ListofUser-error");
+		}
+		
+	
 	
 	
 	
