@@ -41,7 +41,20 @@ public class ProjectManageController {
 		return "/project-interface/createproject";
 	}
 	
-	
+	//For getting list of project
+		@RequestMapping(value="/ListofProject",method=RequestMethod.GET)
+		public String findAllProject(Model model){
+			String delProject="";
+			ProjectHelperModel aProject=new ProjectHelperModel();
+			model.addAttribute("aUser",aProject);
+			model.addAttribute("delProject",delProject);
+			List<Project> projectList= new ArrayList<Project>();
+			for(Project tempProject : ProjectRepositoryT.findAll()){
+				projectList.add(tempProject);
+			}
+			model.addAttribute("projectList",projectList);
+			return "/project-interface/listofproject";
+	}
 	
 	//To delete single user.
 	@RequestMapping(value="/deleteProject",method=RequestMethod.POST)
