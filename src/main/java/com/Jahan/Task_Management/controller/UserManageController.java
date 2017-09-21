@@ -63,5 +63,18 @@ public class UserManageController {
 			else return new ModelAndView("redirect:/ListofUser-error");
 		}
 		
-
+		@RequestMapping(value="/ListofUser-error",method=RequestMethod.GET)
+		public String findAllError(Model model){
+			String str="";
+			UserHelperModel aUser=new UserHelperModel();
+			model.addAttribute("aUser",aUser);
+			model.addAttribute("DelUser",str);
+			List<User> userList= new ArrayList<User>();
+			model.addAttribute("Error",true);
+			for(User cust : UserRepositoryT.findAll()){
+				userList.add(cust);
+			}
+			model.addAttribute("UserList",userList);
+			return "/login/userlist";
+		}
 }
