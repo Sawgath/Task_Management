@@ -99,10 +99,26 @@ public class webController {
 		model.addAttribute("UserList",userList);
 		return "/login/allusers";
 	}
-	
 
 	
-	/** Error page. */
+    /** Error page. */
+    @RequestMapping("/403.html")
+    public String forbidden() {
+        return "/error-interface/403";
+    }
+    
+    /*
+     * testing api
+     */
+    
+    @RequestMapping("/API")
+    public void APIFunction() {
+    	
+  
+    }
+    
+
+/** Error page. */
     @RequestMapping("/error.html")
     public String error(HttpServletRequest request, Model model) {
         model.addAttribute("errorCode", "Error " + request.getAttribute("javax.servlet.error.status_code"));
@@ -116,24 +132,6 @@ public class webController {
         errorMessage.append("</ul>");
         model.addAttribute("errorMessage", errorMessage.toString());
         return "/error-interface/error";
-    }
-
-    /** Error page. */
-    @RequestMapping("/403.html")
-    public String forbidden() {
-        return "/error-interface/403";
-    }
-    
-    
-    /*
-     * testing api
-     */
-    
-    
-    @RequestMapping("/API")
-    public void APIFunction() {
-    	
-  
     }
     
 }
