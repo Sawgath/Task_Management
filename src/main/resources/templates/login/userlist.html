@@ -20,7 +20,8 @@
             <td>password</td>
             <td>email</td>
             <td>role</td>
-            <td>Button</td>
+            <td></td>
+            <td></td>
           
         </tr>
         <tr th:each="User: ${UserList}">
@@ -30,6 +31,14 @@
             <td th:text="${User.getpassword()}">password</td>
             <td th:text="${User.getemail()}">email</td>
             <td th:text="${User.getrole()}">role</td>
+            <td>
+            <div class="row-sm-10">
+            <form class="form-horizontal" th:action="@{/updateUser}" method="post">
+            <input type="hidden" name="updateUser" id="updateUser"  th:value="${User.getuserId()}" />
+            <input type="submit" class="btn btn-default" value="Update" th:name= "${User.getuserId()}"/>
+            </form>
+            </div>
+            </td>
             <td>
             <div class="row-sm-10">
             <form class="form-horizontal" action="http://localhost:8080/deleteUser" method="post">

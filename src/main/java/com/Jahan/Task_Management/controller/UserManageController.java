@@ -28,11 +28,30 @@ public class UserManageController {
 	@RequestMapping(value="/ListofUser",method=RequestMethod.GET)
 	public String findAll(Model model){
 		String str="";
+		String updateUser="";
 		UserHelperModel aUser=new UserHelperModel();
 		model.addAttribute("aUser",aUser);
 		model.addAttribute("DelUser",str);
+		model.addAttribute("updateUser",updateUser);
 		List<User> userList= new ArrayList<User>();
 		model.addAttribute("Error",false);
+		for(User cust : UserRepositoryT.findAll()){
+			userList.add(cust);
+		}
+		model.addAttribute("UserList",userList);
+		return "/login/userlist";
+	}
+	
+	@RequestMapping(value="/ListofUser-error",method=RequestMethod.GET)
+	public String findAllError(Model model){
+		String str="";
+		String updateUser="";
+		UserHelperModel aUser=new UserHelperModel();
+		model.addAttribute("aUser",aUser);
+		model.addAttribute("DelUser",str);
+		model.addAttribute("updateUser",updateUser);
+		List<User> userList= new ArrayList<User>();
+		model.addAttribute("Error",true);
 		for(User cust : UserRepositoryT.findAll()){
 			userList.add(cust);
 		}
@@ -45,6 +64,31 @@ public class UserManageController {
 	public String userInterface(Model model, @ModelAttribute("UserSession") UserHelperModel aUser){
 			model.addAttribute("aUser",aUser);
 			return "/user-interface/membermainpage";
+	}
+	
+	
+	//To update single user.
+	@RequestMapping(value="/updateUser",method=RequestMethod.POST)
+	public String updateUser(Model model,@ModelAttribute("updateUser") String userID){
+		long num=Long.parseLong(userID);
+		User tempUserUpdate=LoginHelperT.getUserInfoByID(num);
+		UserHelperModel userUpdate =new UserHelperModel();
+		userUpdate.userId= tempUserUpdate.getuserId();
+		userUpdate.setpassword(tempUserUpdate.getpassword());
+		userUpdate.setuserName(tempUserUpdate.getuserName());
+		userUpdate.active= Integer.toString(tempUserUpdate.getActive());
+		
+		model.addAttribute("UserUpdate",userUpdate);
+		return "/user-interface/updateuser";
+	}
+	
+	@RequestMapping(value="/updatedUser",method=RequestMethod.POST)
+	public ModelAndView updatedUser(Model model,@ModelAttribute("UserUpdate") UserHelperModel aUser){
+		
+
+		LoginHelperT.updateUser(aUser);
+		
+		return new ModelAndView("redirect:/ListofUser");
 	}
 	
 	//To delete single user.
@@ -61,20 +105,7 @@ public class UserManageController {
 			boolean temp = LoginHelperT.saveUser(aUser);
 			if(temp) return new ModelAndView("redirect:/ListofUser");
 			else return new ModelAndView("redirect:/ListofUser-error");
-		}
+	}
 		
-		@RequestMapping(value="/ListofUser-error",method=RequestMethod.GET)
-		public String findAllError(Model model){
-			String str="";
-			UserHelperModel aUser=new UserHelperModel();
-			model.addAttribute("aUser",aUser);
-			model.addAttribute("DelUser",str);
-			List<User> userList= new ArrayList<User>();
-			model.addAttribute("Error",true);
-			for(User cust : UserRepositoryT.findAll()){
-				userList.add(cust);
-			}
-			model.addAttribute("UserList",userList);
-			return "/login/userlist";
-		}
+	
 }

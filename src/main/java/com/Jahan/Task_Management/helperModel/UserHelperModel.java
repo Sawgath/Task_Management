@@ -7,6 +7,14 @@ import com.Jahan.Task_Management.model.Role;
 public class UserHelperModel {
 	
 	
+	public String getActive() {
+		return active;
+	}
+
+	public void setActive(String active) {
+		this.active = active;
+	}
+
 	public long userId;
 	
 	public String userName;
@@ -19,6 +27,8 @@ public class UserHelperModel {
 	
 
 	public Role role;
+	
+	public String active;
 	
 	
 	public long getuserId() {

@@ -77,6 +77,11 @@ public class LoginHelper {
 		return -1;
 	}
 	
+	public User getUserInfoByID(long userID){
+		User aUser = userRepository.findByuserId(userID);
+		return aUser;
+	}
+	
 	//helper function for saving user info to database.
 	public boolean saveUser(UserHelperModel aUserHelper){
 		
@@ -107,6 +112,16 @@ public class LoginHelper {
 	 		user.setrole(Role.MANAGER);
 	 		userRepository.save(user);
 		}
+	}
+	
+	public void updateUser(UserHelperModel user) {	
+			BCryptPasswordEncoder aBCryptPasswordEncoder=SecurityConfigurationT.passwordEncoder();
+	 		user.setpassword(aBCryptPasswordEncoder.encode(user.getpassword()));
+	 		User tempUser=userRepository.findOne(user.getuserId());
+	 		tempUser.setpassword(user.getpassword());
+	 		tempUser.setuserName(user.getuserName());
+	 		tempUser.setActive(Integer.parseInt(user.active));
+	 		userRepository.save(tempUser);
 	}
 	
 	//helper function for deleting user entity from database.
