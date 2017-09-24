@@ -55,10 +55,26 @@ public class ProjectManageController {
 			model.addAttribute("projectList",projectList);
 			return "/project-interface/listofproject";
 	}
+		
+	//To update project
+	@RequestMapping(value="/updateProject",method=RequestMethod.POST)
+	public String updateProject(Model model,@ModelAttribute("delProject") String projectID){
+		long num=Long.parseLong(projectID);
+		Project aProject = new Project();
+		aProject = projectHelper.getProjectbyID(num);
+		ProjectHelperModel aProjectHelperModel= new ProjectHelperModel(aProject);
+		model.addAttribute("aProjectHelperModel",aProjectHelperModel);
+		return "/project-interface/updateproject";
+	}
+	@RequestMapping(value="/updatedProject",method=RequestMethod.POST)
+	public ModelAndView updatedProject(Model model,@ModelAttribute("aProjectHelperModel") ProjectHelperModel aProjectHelperModel){
+		projectHelper.updateProject(aProjectHelperModel);
+		return new ModelAndView("redirect:/ListofProject");
+	}
 	
 	//To delete single user.
 	@RequestMapping(value="/deleteProject",method=RequestMethod.POST)
-	public ModelAndView deleteUser(Model model,@ModelAttribute("delProject") String projectID){
+	public ModelAndView deleteProject(Model model,@ModelAttribute("delProject") String projectID){
 		long num=Long.parseLong(projectID);
 		projectHelper.DeleteProject(num);
 		return new ModelAndView("redirect:/ListofProject");

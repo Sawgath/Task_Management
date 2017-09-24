@@ -19,7 +19,8 @@ public class ProjectHelper {
 	@Autowired
 	ProjectRepository projectRepository;
 	
-	//helper function for saving user info to database.
+	
+	//helper function for saving project info to database.
 	public void saveProject(ProjectHelperModel aProjectHelper){
 		
 		if(!aProjectHelper.projectName.equals("") && !aProjectHelper.projectStartTime.equals("") && !aProjectHelper.projectEndTime.equals("")) 
@@ -36,7 +37,21 @@ public class ProjectHelper {
 
 		}
 	}
+	//helper function for finding a project by id
+	public Project getProjectbyID(long id){
+		
+		Project aProject = new Project();
+		if(id!=0) 
+		{	
+			aProject=projectRepository.findOne(id);
+		}
+		return aProject;
+	}
+	//helper function for update a project
+	public void updateProject(ProjectHelperModel aProjectHelper){
 	
+	}
+	//helper function for delete project from database.
 	public void DeleteProject(long id){
 
 		if(id!=0) 

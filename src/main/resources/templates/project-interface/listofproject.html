@@ -23,6 +23,7 @@
             <td>Start Date</td>
             <td>end Date</td>
             <td>#</td>
+            <td>#</td>
           
         </tr>
         <tr th:each="Project: ${projectList}">
@@ -31,6 +32,14 @@
             <td th:text="${Project.getProjectDescription()}">Project Description</td>
             <td th:text="${Project.projectStartTime}">Start Date</td>
             <td th:text="${Project.getProjectEndTime()}">end Date</td>
+            <td>
+            <div class="row-sm-10">
+            <form class="form-horizontal" action="http://localhost:8080/updateProject" method="post">
+            <input type="hidden" name="delProject" id="delProject"  th:value="${Project.getProjectId()}" />
+            <input type="submit" class="btn btn-default" value="Update" th:name= "${Project.getProjectId()}"/>
+            </form>
+            </div>
+            </td>
             <td>
             <div class="row-sm-10">
             <form class="form-horizontal" action="http://localhost:8080/deleteProject" method="post">

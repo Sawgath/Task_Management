@@ -1,5 +1,7 @@
 package com.Jahan.Task_Management.helperModel;
 
+import com.Jahan.Task_Management.model.Project;
+
 public class ProjectHelperModel {
 	
 	public long projectId;
@@ -16,6 +18,14 @@ public class ProjectHelperModel {
 		this.projectDescription = projectDescription;
 		this.projectStartTime=projectStartTime;
 		this.projectEndTime=projectEndTime;
+	}
+	
+	public ProjectHelperModel(Project aProject) {
+		this.projectId=aProject.getProjectId();
+		this.projectName = aProject.getProjectName();
+		this.projectDescription = aProject.getProjectDescription();
+		this.projectStartTime=aProject.getProjectStartTime().toString();
+		this.projectEndTime=aProject.getProjectEndTime().toString();
 	}
 	public long getProjectId() {
 		return projectId;

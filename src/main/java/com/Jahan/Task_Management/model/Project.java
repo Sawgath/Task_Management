@@ -46,6 +46,11 @@ public class Project implements Serializable {
 	public long getProjectId() {
 		return projectId;
 	}
+	
+	public void setProjectId(long projectId) {
+		this.projectId =  projectId;
+	}
+
 
 	public String getProjectName() {
 		return projectName;
