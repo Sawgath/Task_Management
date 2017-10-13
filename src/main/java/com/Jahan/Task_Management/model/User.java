@@ -15,6 +15,8 @@ import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
+import com.Jahan.Task_Management.helperModel.UserHelperModel;
+
 //Entity model for user_tb of TaskManagementDb
 @Entity
 @Table(name = "user_tb")
@@ -36,6 +38,8 @@ public class User implements Serializable {
 	private String email;
 	@Column(name = "active")
 	private int active;
+	@Column(name = "reset_token")
+	private String resetToken;
 	public int getActive() {
 		return active;
 	}
@@ -66,6 +70,17 @@ public class User implements Serializable {
 		this.role=role;
 	}
 	
+	public User(UserHelperModel aUser) {
+		this.userName = aUser.userName;
+		this.password = aUser.password;
+		this.email=aUser.email;
+		this.role=aUser.role;
+		this.active=Integer.parseInt(aUser.active);
+	}
+	
+	public long setuserId() {
+		return userId;
+	}
 	public long getuserId() {
 		return userId;
 	}
@@ -92,6 +107,13 @@ public class User implements Serializable {
 
 	public void setemail(String email) {
 		this.email = email;
+	}
+	public String getResetToken() {
+		return resetToken;
+	}
+
+	public void setResetToken(String resetToken) {
+		this.resetToken = resetToken;
 	}
 	
 	@Override

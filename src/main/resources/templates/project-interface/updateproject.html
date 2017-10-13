@@ -13,11 +13,11 @@
 	    <div class="page-header">
 	        <h1>Update Project</h1>
 	    </div>
-    
-    		<form class="form-horizontal" action="#" th:action="@{/NewProject}" th:object="${aProjectHelperModel}" method="post">
+    		<form class="form-horizontal" action="#" th:action="@{/updatedProject}" th:object="${aProjectHelperModel}" method="post">
                 <div class="form-group">
                     <label class="col-sm-2 control-label">Project Name :</label>
                     <div class="col-sm-10">
+					<input type="text" style="visibility: hidden" th:field="*{projectId}" th:value="${projectId}" class="form-control" /> 
                     <input type="text" class="form-control" th:field="*{projectName}"/>
                     </div>
                 </div>

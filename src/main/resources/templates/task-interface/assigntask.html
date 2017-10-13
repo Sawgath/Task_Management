@@ -11,50 +11,51 @@
 <body>
     <div class="container">
 	    <div class="page-header">
-	        <h1>New Task</h1>
+	        <h1>Allocating Task to User</h1>
 	    </div>
-    		<form class="form-horizontal" action="#" th:action="@{/NewTask}" th:object="${aTask}" method="post">
+    		<form class="form-horizontal" action="#" th:action="@{/TaskAssign}" th:object="${aUserTaskRelHelperModel}" method="post">
     			<div class="form-group">
     				<label class="col-sm-2 control-label">Select Project :</label>
     				<div class="col-sm-10">
 				    <select class="form-control" th:field="*{projectId}">
 				    		<option value= "0" >None</option>
-						     <option th:each="aProject : ${allProject}"
+						     <option th:each="aProject : ${projectList}"
 						             th:value="${aProject.projectId}"
 						             th:text="${aProject.projectName}">
      						 </option>
 					</select>
 					</div>
 				</div>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">Task Name :</label>
-                    <div class="col-sm-10">
-                    <input type="text" class="form-control" th:field="*{taskName}"/>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">Description :</label>
-                    <div class="col-sm-10">
-                    <input type="text" class="form-control" th:field="*{taskDescription}"/>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">Goal :</label>
-                    <div class="col-sm-10">
-                    <input type="text" class="form-control" th:field="*{taskGoal}"/>
-                    </div>
-                </div>
-                <div class="form-group">
-    				<label class="col-sm-2 control-label">Select Priority :</label>
+				<div class="form-group">
+    				<label class="col-sm-2 control-label">Select Task :</label>
     				<div class="col-sm-10">
-				    <select class="form-control" th:field="*{taskPriority}">
-						     <option th:each="PriorityT : ${T(com.Jahan.Task_Management.model.Priority).values()}"
-						             th:value="${PriorityT}"
-						             th:text="${PriorityT}">
+				    <select class="form-control" th:field="*{taskId}">
+				    		<option value= "0" >None</option>
+						     <option th:each="aTask : ${taskList}"
+						             th:value="${aTask.taskId}"
+						             th:text="${aTask.taskName}">
      						 </option>
 					</select>
 					</div>
 				</div>
+				<div class="form-group">
+    				<label class="col-sm-2 control-label">Select User :</label>
+    				<div class="col-sm-10">
+				    <select class="form-control" th:field="*{userId}">
+				    		<option value= "0" >None</option>
+						     <option th:each="aUser : ${userList}"
+						             th:value="${aUser.getuserId()}"
+						             th:text="${aUser.getuserName()}">
+     						 </option>
+					</select>
+					</div>
+				</div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Description :</label>
+                    <div class="col-sm-10">
+                    <input type="text" class="form-control" th:field="*{taskAssignDescription}"/>
+                    </div>
+                </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">Task start Time :</label>
                     <div class="col-sm-10">

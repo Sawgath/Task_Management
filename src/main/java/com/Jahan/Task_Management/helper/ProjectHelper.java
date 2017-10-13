@@ -29,7 +29,7 @@ public class ProjectHelper {
 			try {
 	            Date projectStartTime = formatter.parse(aProjectHelper.projectStartTime);
 	            Date projectEndTime = formatter.parse(aProjectHelper.projectEndTime);
-	            Project aProject=new Project(aProjectHelper.projectName,aProjectHelper.projectDescription,projectStartTime,projectEndTime);
+	            Project aProject=new Project(aProjectHelper.projectName,aProjectHelper.projectDescription,projectStartTime,projectEndTime,aProjectHelper.createdByuserId);
 	            projectRepository.save(aProject);
 	        } catch (ParseException e) {
 	            e.printStackTrace();
@@ -49,7 +49,9 @@ public class ProjectHelper {
 	}
 	//helper function for update a project
 	public void updateProject(ProjectHelperModel aProjectHelper){
-	
+		Project tempProject=projectRepository.findOne(aProjectHelper.projectId);
+		tempProject.setProjectDescription(aProjectHelper.getProjectDescription());
+		projectRepository.save(tempProject);
 	}
 	//helper function for delete project from database.
 	public void DeleteProject(long id){

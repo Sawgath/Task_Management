@@ -24,45 +24,68 @@ public class ProjectManageController {
 	ProjectRepository ProjectRepositoryT;
 	@Autowired
 	ProjectHelper projectHelper;
-	
+	/*
+	 * //For create new project
+	 */
 	@RequestMapping(value="/NewProject",method=RequestMethod.POST)
-	public ModelAndView addNewProject(@ModelAttribute("aProject") ProjectHelperModel aProject){
-		if(aProject!=null) {
+	public ModelAndView addNewProject(@ModelAttribute("aProject") ProjectHelperModel aProject,@ModelAttribute("UserSession") UserHelperModel aSessionUser){
+		if(aProject!=null) 
+		{
+			aProject.setCreatedByuserId(aSessionUser.getuserId());
 			projectHelper.saveProject(aProject);
 		}
 		return new ModelAndView("redirect:/UI");
 	}
-	
-	
 	@RequestMapping(value="/CreateProject",method=RequestMethod.POST)
 	public String newProjectForm(Model model){
 		ProjectHelperModel aProject=new ProjectHelperModel();
 		model.addAttribute("aProject",aProject);
 		return "/project-interface/createproject";
 	}
-	
-	//For getting list of project
-		@RequestMapping(value="/ListofProject",method=RequestMethod.GET)
-		public String findAllProject(Model model){
-			String delProject="";
-			ProjectHelperModel aProject=new ProjectHelperModel();
-			model.addAttribute("aUser",aProject);
-			model.addAttribute("delProject",delProject);
-			List<Project> projectList= new ArrayList<Project>();
-			for(Project tempProject : ProjectRepositoryT.findAll()){
-				projectList.add(tempProject);
+	/*
+	 * For getting list of project
+	 */
+	@RequestMapping(value="/ListofProject",method=RequestMethod.GET)
+	public String findAllProject(Model model, @ModelAttribute("UserSession") UserHelperModel aSessionUser){
+		String delProject="";
+		String upProject="";
+		ProjectHelperModel aProject=new ProjectHelperModel();
+		model.addAttribute("aUser",aProject);
+		model.addAttribute("upProject",upProject);
+		model.addAttribute("delProject",delProject);
+		List<Project> projectList= new ArrayList<Project>();
+		for(Project tempProject : ProjectRepositoryT.findAll()){
+			if(aSessionUser.getrole().equals(Role.MANAGER))
+			{
+				if(aSessionUser.userId==tempProject.createdByuserId)
+				{
+					projectList.add(tempProject);
+				}
 			}
-			model.addAttribute("projectList",projectList);
-			return "/project-interface/listofproject";
+			else if(aSessionUser.getrole().equals(Role.STAFF))
+			{
+				//Skip
+			}
+			else 
+			{
+				projectList.add(tempProject);	
+			}
+			
+		}
+		model.addAttribute("projectList",projectList);
+		return "/project-interface/listofproject";
 	}
-		
-	//To update project
+	/*
+	 * //To update project
+	 */
 	@RequestMapping(value="/updateProject",method=RequestMethod.POST)
-	public String updateProject(Model model,@ModelAttribute("delProject") String projectID){
-		long num=Long.parseLong(projectID);
+	public String updateProject(Model model,@ModelAttribute("upProject") String upProject){
+		long num=Long.parseLong(upProject);
 		Project aProject = new Project();
 		aProject = projectHelper.getProjectbyID(num);
 		ProjectHelperModel aProjectHelperModel= new ProjectHelperModel(aProject);
+		//DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+		//Date date = new Date();
 		model.addAttribute("aProjectHelperModel",aProjectHelperModel);
 		return "/project-interface/updateproject";
 	}
@@ -71,8 +94,9 @@ public class ProjectManageController {
 		projectHelper.updateProject(aProjectHelperModel);
 		return new ModelAndView("redirect:/ListofProject");
 	}
-	
-	//To delete single user.
+	/*
+	 * //To delete single user.
+	 */
 	@RequestMapping(value="/deleteProject",method=RequestMethod.POST)
 	public ModelAndView deleteProject(Model model,@ModelAttribute("delProject") String projectID){
 		long num=Long.parseLong(projectID);

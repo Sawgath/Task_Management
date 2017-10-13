@@ -31,6 +31,12 @@ public class Task {
 	@DateTimeFormat(pattern="dd-MM-yyyy")
 	@Column(name = "taskEndTime")
 	private Date taskEndTime;
+	@Column(name = "taskPriority")
+	private Priority taskPriority;
+	@Column(name = "usingFlag")
+	public String usingFlag;
+	@Column(name = "createdByuserId")
+	public long createdByuserId;
 	
 	public Task() 
 	{
@@ -43,6 +49,17 @@ public class Task {
 		this.taskGoal=taskGoal;
 		this.taskStartTime=taskStartTime;
 		this.taskEndTime=taskEndTime;
+	}
+	public Task( long parentId, long projectId, String taskName,String taskDescription,String taskGoal, Date taskStartTime, Date taskEndTime,Priority taskPriority,long createdByuserId) {
+		this.parentId = parentId;
+		this.projectId=projectId;
+		this.taskName=taskName;
+		this.taskDescription=taskDescription;
+		this.taskGoal=taskGoal;
+		this.taskStartTime=taskStartTime;
+		this.taskEndTime=taskEndTime;
+		this.taskPriority=taskPriority;
+		this.createdByuserId=createdByuserId;
 	}
 	public long getTaskId() {
 		return taskId;
@@ -88,5 +105,27 @@ public class Task {
 	}
 	public void setTaskEndTime(Date taskEndTime) {
 		this.taskEndTime = taskEndTime;
+	}
+	public Priority getTaskPriority() {
+		return taskPriority;
+	}
+	public void setTaskPriority(Priority taskPriority) {
+		this.taskPriority = taskPriority;
+	}
+	
+	public String getUsingFlag() {
+		return usingFlag;
+	}
+
+	public void setUsingFlag(String usingFlag) {
+		this.usingFlag = usingFlag;
+	}
+
+	public long getCreatedByuserId() {
+		return createdByuserId;
+	}
+
+	public void setCreatedByuserId(long createdByuserId) {
+		this.createdByuserId = createdByuserId;
 	}
 }

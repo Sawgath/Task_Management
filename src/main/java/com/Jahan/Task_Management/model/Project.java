@@ -33,6 +33,14 @@ public class Project implements Serializable {
 	@Column(name = "projectEndTime")
 	private Date projectEndTime;
 	
+	@Column(name = "usingFlag")
+	public String usingFlag;
+	
+	@Column(name = "createdByuserId")
+	public long createdByuserId;
+	
+	
+
 	public Project() {
 	}
  
@@ -41,6 +49,13 @@ public class Project implements Serializable {
 		this.projectDescription = projectDescription;
 		this.projectStartTime=projectStartTime;
 		this.projectEndTime=projectEndTime;
+	}
+	public Project(String projectName, String projectDescription,Date projectStartTime,Date projectEndTime,long createdByuserId) {
+		this.projectName = projectName;
+		this.projectDescription = projectDescription;
+		this.projectStartTime=projectStartTime;
+		this.projectEndTime=projectEndTime;
+		this.createdByuserId=createdByuserId;
 	}
 	
 	public long getProjectId() {
@@ -82,5 +97,21 @@ public class Project implements Serializable {
 
 	public void setProjectEndTime(Date projectEndTime) {
 		this.projectEndTime = projectEndTime;
+	}
+	
+	public String getUsingFlag() {
+		return usingFlag;
+	}
+
+	public void setUsingFlag(String usingFlag) {
+		this.usingFlag = usingFlag;
+	}
+
+	public long getCreatedByuserId() {
+		return createdByuserId;
+	}
+
+	public void setCreatedByuserId(long createdByuserId) {
+		this.createdByuserId = createdByuserId;
 	}
 }

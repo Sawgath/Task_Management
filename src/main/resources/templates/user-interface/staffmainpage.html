@@ -15,10 +15,17 @@
 	        <h1><b>Welcome </b> <b th:text="${aUser.getuserName()}">Name</b></h1>
 	    </div>
 	    <table class="table table-hover">
+	    	<tr align="center">
+	            <td><form class="form-horizontal" th:action="@{/taskstatuspage}"  method="get">
+	            <input type="hidden" name="aUser" id="aUser"  th:value="${aUser.getuserId()}" />
+	            <input type="submit" class="btn btn-primary btn-lg" style="width: 800px;" value="My Task Status" th:name= "${aUser.getuserId()}"/>
+	            </form>
+	            </td>
+	        </tr >
 	        <tr align="center">
 	            <td><form class="form-horizontal" th:action="@{/CreateProject}" method="post">
 	            <input type="hidden" name="aUser" id="aUser"  th:value="${aUser.getuserId()}" />
-	            <input type="submit" class="btn btn-primary btn-lg" style="width: 800px;" value="Create a Project" th:name= "${aUser.getuserId()}"/>
+	            <input type="submit" class="btn btn-primary btn-lg" style="width: 800px;" value="Create a Project" th:name= "${aUser.getuserId()}" disabled="disabled"/>
 	            </form>
 	            </td>
 	        </tr>
@@ -33,7 +40,7 @@
 	        <tr align="center">
 	            <td><form class="form-horizontal" th:action="@{/CreateTask}"  method="post">
 	            <input type="hidden" name="aUser" id="aUser"  th:value="${aUser.getuserId()}" />
-	            <input type="submit" class="btn btn-primary btn-lg" style="width: 800px;" value="Create a Task" th:name= "${aUser.getuserId()}"/>
+	            <input type="submit" class="btn btn-primary btn-lg" style="width: 800px;" value="Create a Task" th:name= "${aUser.getuserId()}" disabled="disabled"/>
 	            </form>
 	            </td>
 	        </tr>
@@ -47,14 +54,14 @@
 	        <tr align="center">
 	            <td><form class="form-horizontal" th:action="@{/TaskAssign}"  method="get">
 	            <input type="hidden" name="aUser" id="aUser"  th:value="${aUser.getuserId()}" />
-	            <input type="submit" class="btn btn-primary btn-lg" style="width: 800px;" value="TaskAssign" th:name= "${aUser.getuserId()}"/>
+	            <input type="submit" class="btn btn-primary btn-lg" style="width: 800px;" value="TaskAssign" th:name= "${aUser.getuserId()}" disabled="disabled"/>
 	            </form>
 	            </td>
 	        </tr >
 	        <tr align="center">
 	            <td><form class="form-horizontal" th:action="@{/ListofUser}"  method="get">
 	            <input type="hidden" name="aUser" id="aUser"  th:value="${aUser.getuserId()}" />
-	            <input type="submit" class="btn btn-primary btn-lg" style="width: 800px;" value="Add or Delete User" th:name= "${aUser.getuserId()}"/>
+	            <input type="submit" class="btn btn-primary btn-lg" style="width: 800px;" value="Add or Delete User" th:name= "${aUser.getuserId()}" disabled="disabled"/>
 	            </form>
 	            </td>
 	        </tr >

@@ -81,7 +81,6 @@ public class LoginHelper {
 		User aUser = userRepository.findByuserId(userID);
 		return aUser;
 	}
-	
 	//helper function for saving user info to database.
 	public boolean saveUser(UserHelperModel aUserHelper){
 		
@@ -124,9 +123,14 @@ public class LoginHelper {
 	 		userRepository.save(tempUser);
 	}
 	
+	public void updateForChangeUserRole(UserHelperModel user) {	
+ 		User tempUser=userRepository.findOne(user.getuserId());
+ 		tempUser.setActive(Integer.parseInt(user.active));
+ 		tempUser.setrole(user.getrole());
+ 		userRepository.save(tempUser);
+	}
 	//helper function for deleting user entity from database.
 	public void deleteUser(long id){
-
 		if(id!=0) 
 		{	
 			userRepository.delete(id);

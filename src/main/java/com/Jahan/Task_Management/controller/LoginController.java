@@ -11,6 +11,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.Jahan.Task_Management.helper.LoginHelper;
 import com.Jahan.Task_Management.helperModel.UserHelperModel;
+import com.Jahan.Task_Management.model.User;
 import com.Jahan.Task_Management.repo.UserRepository;
 /*
  * 	Login Controller for checking and validation of user input
@@ -22,20 +23,19 @@ public class LoginController {
 	UserRepository UserRepositoryT;
 	@Autowired
 	LoginHelper LoginHelperT;
-	
 	@RequestMapping(value= {"/", "/home"},method=RequestMethod.GET)
 	public String indexPage(){
 		// return view of the login page.
 		return "/login/index";
 	}
-	 /* test */
+	/* test */
 	@RequestMapping(value= {"/{accountNumber}"},method=RequestMethod.GET)
 	public String indexPage2(@PathVariable final int accountNumber){
 		
 		// return view of the login page.
 		return "public number "+accountNumber;
 	}
-	 /* Login form with error. */
+	/* Login form with error. */
 	@RequestMapping(value="/Login",method=RequestMethod.GET)
 	public String Login(Model model){
 		UserHelperModel aUser=new UserHelperModel();
@@ -43,7 +43,7 @@ public class LoginController {
 		// return view of the login page.
 		return "/login/login";
 	}
-	 /* Login form  */
+	/* Login form  */
 	@RequestMapping(value="/Login",method=RequestMethod.POST)
 	public ModelAndView process(Model model, @ModelAttribute("aUser") UserHelperModel aUser){
 		String aText="";
@@ -55,7 +55,7 @@ public class LoginController {
 			// redirect to find all user page.
 			long tempId= LoginHelperT.getUserId(aUser);
 			if(tempId!=-1) {
-				aUser.setuserId(tempId);
+				aUser=new UserHelperModel(LoginHelperT.getUserInfoByID(tempId));
 			}
 			model.addAttribute("UserSession",aUser);
 			return new ModelAndView("redirect:/UI");
@@ -65,7 +65,7 @@ public class LoginController {
 			return new ModelAndView("redirect:/login-error");
 		}
 	}
-	 /* Login form with error. */
+	/* Login form with error. */
     @RequestMapping("/login-error")
     public String loginError(Model model) {
     	UserHelperModel aUser=new UserHelperModel();

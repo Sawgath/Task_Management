@@ -4,27 +4,26 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import com.Jahan.Task_Management.helperModel.ProjectHelperModel;
-import com.Jahan.Task_Management.helperModel.TaskHelperModel;
-import com.Jahan.Task_Management.model.Project;
+import com.Jahan.Task_Management.helperModel.*;
+import com.Jahan.Task_Management.model.*;
 import com.Jahan.Task_Management.model.Task;
 import com.Jahan.Task_Management.repo.TaskRepository;
 
 @Component
 public class TaskHelper {
 
-	@Autowired
-	TaskRepository TaskRepositoryT;
-	public void DeleteTask(long id){
-		if(id!=0) 
-		{	
-			TaskRepositoryT.delete(id);
-		}
+@Autowired
+TaskRepository TaskRepositoryT;
+public void DeleteTask(long id){
+	if(id!=0) 
+	{	
+		TaskRepositoryT.delete(id);
 	}
+}
 	
 public void saveTask(TaskHelperModel aTaskHelperModel){
 		
-		if(!aTaskHelperModel.taskName.equals("") && !aTaskHelperModel.taskStartTime.equals("") && !aTaskHelperModel.taskEndTime.equals("")) 
+		if(aTaskHelperModel.projectId!=0 && !aTaskHelperModel.taskName.equals("") && !aTaskHelperModel.taskStartTime.equals("") && !aTaskHelperModel.taskEndTime.equals("")) 
 		{
 			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 			try {
@@ -34,8 +33,7 @@ public void saveTask(TaskHelperModel aTaskHelperModel){
 	             * Task constructor parameter
 	             * long parentId, long projectId, String taskName,String taskDescription,String taskGoal, String taskStartTime, String taskEndTime
 	             */
-	            Task aTask=new Task(0, aTaskHelperModel.projectId, aTaskHelperModel.taskName,aTaskHelperModel.taskDescription,
-	            					aTaskHelperModel.taskGoal, projectStartTime, projectEndTime);
+	            Task aTask=new Task(0, aTaskHelperModel.projectId, aTaskHelperModel.taskName,aTaskHelperModel.taskDescription,aTaskHelperModel.taskGoal, projectStartTime, projectEndTime,aTaskHelperModel.taskPriority,aTaskHelperModel.createdByuserId);
 	            TaskRepositoryT.save(aTask);
 	        } catch (ParseException e) {
 	            e.printStackTrace();
@@ -43,3 +41,4 @@ public void saveTask(TaskHelperModel aTaskHelperModel){
 		}
 	}
 }
+

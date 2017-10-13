@@ -1,5 +1,9 @@
 package com.Jahan.Task_Management.helperModel;
 
+import javax.persistence.Column;
+
+import com.Jahan.Task_Management.model.Priority;
+
 public class TaskHelperModel {	
 	public long taskId;
 	public long parentId;
@@ -9,6 +13,11 @@ public class TaskHelperModel {
 	public String taskGoal;
 	public String taskStartTime;
 	public String taskEndTime;
+	public Priority taskPriority;
+	public String usingFlag;
+	public long createdByuserId;
+	
+	
 	
 	public TaskHelperModel() 
 	{
@@ -70,5 +79,26 @@ public class TaskHelperModel {
 	}
 	public void setTaskEndTime(String taskEndTime) {
 		this.taskEndTime = taskEndTime;
+	}
+	public Priority getTaskPriority() {
+		return taskPriority;
+	}
+	public void setTaskPriority(Priority taskPriority) {
+		this.taskPriority = taskPriority;
+	}
+	public String getUsingFlag() {
+		return usingFlag;
+	}
+
+	public void setUsingFlag(String usingFlag) {
+		this.usingFlag = usingFlag;
+	}
+
+	public long getCreatedByuserId() {
+		return createdByuserId;
+	}
+
+	public void setCreatedByuserId(long createdByuserId) {
+		this.createdByuserId = createdByuserId;
 	}
 }

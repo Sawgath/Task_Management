@@ -56,7 +56,6 @@ public class webController {
 		userRepository.save(new User("Creep2",aBCryptPasswordEncoder.encode("123"),"Creep2@yahoo.com",Role.STAFF));
 		return "Done";
 	}
-	
 	@RequestMapping("/registration")
 	public ModelAndView registration(Model model){
 		
@@ -66,7 +65,6 @@ public class webController {
 		modelAndView.setViewName("/user-interface/registration");
 		return modelAndView;
 	}
-	
 	
 	@RequestMapping(value = "/registration", method = RequestMethod.POST)
 	public ModelAndView createNewUser(@Valid User user, BindingResult bindingResult) {

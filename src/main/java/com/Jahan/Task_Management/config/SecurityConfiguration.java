@@ -18,14 +18,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	    http.csrf().disable();
 	  }
 	
-	
 	@Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         //auth.userDetailsService(userDetailsService).passwordEncoder(aWebMvcConfig.passwordEncoder());
 		
-    }
-	
-	
+    }	
 	@Override
 	public void configure(WebSecurity web) throws Exception {
 	   
