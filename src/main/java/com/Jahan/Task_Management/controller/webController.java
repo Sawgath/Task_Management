@@ -52,8 +52,10 @@ public class webController {
 		userRepository.save(new User("Admin",aBCryptPasswordEncoder.encode("123"),"Admin@yahoo.com",Role.ADMIN));
 		userRepository.save(new User("Admin2",aBCryptPasswordEncoder.encode("123"),"admin2@yahoo.com",Role.ADMIN));
 		userRepository.save(new User("Boss",aBCryptPasswordEncoder.encode("123"),"Boss@yahoo.com",Role.MANAGER));
+		userRepository.save(new User("Boss2",aBCryptPasswordEncoder.encode("123"),"Creep1@yahoo.com",Role.MANAGER));
 		userRepository.save(new User("Creep1",aBCryptPasswordEncoder.encode("123"),"Creep1@yahoo.com",Role.STAFF));
 		userRepository.save(new User("Creep2",aBCryptPasswordEncoder.encode("123"),"Creep2@yahoo.com",Role.STAFF));
+		userRepository.save(new User("Mac",aBCryptPasswordEncoder.encode("123"),"sawjahan@gmail.com",Role.STAFF));
 		return "Done";
 	}
 	@RequestMapping("/registration")
