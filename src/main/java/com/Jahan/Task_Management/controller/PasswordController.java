@@ -39,7 +39,7 @@ public class PasswordController {
 	 * Process form submission from forgotPassword page
 	 */
 	@RequestMapping(value = "/forgot", method = RequestMethod.POST)
-	public ModelAndView processForgotPasswordForm(ModelAndView modelAndView, @RequestParam("email") String userEmail, HttpServletRequest request) {
+	public ModelAndView processForgotPasswordForm(ModelAndView modelAndView, @RequestParam("email") String userEmail, HttpServletRequest request,RedirectAttributes redir) {
 		// Lookup user in database by e-mail
 		User aUser = UserRepositoryT.findByEmail(userEmail);
 		if (aUser==null) 
@@ -58,13 +58,15 @@ public class PasswordController {
 			passwordResetEmail.setFrom("sawjahan4@gmail.com");
 			passwordResetEmail.setTo(aUser.getemail());
 			passwordResetEmail.setSubject("Password Reset");
-			passwordResetEmail.setText("To reset your password, click the link below:\n" + appUrl+":5000"
+			passwordResetEmail.setText("To reset your password, click the link below:\n" + appUrl+""
 					+ "/reset?token=" + aUser.getResetToken());
 			emailService.sendEmail(passwordResetEmail);
 			// Add success message to view
-			modelAndView.addObject("successMessage", "A password reset link has been sent to " + userEmail);
+			//modelAndView.addObject("successMessage", "A password reset link has been sent to " + userEmail);
+			redir.addFlashAttribute("successMessage", "A password reset link has been sent to " + userEmail);
+			
 		}
-		modelAndView.setViewName("/passwordreset-interface/forgotPassword");
+		modelAndView.setViewName("redirect:forgot");
 		return modelAndView;
 	}
 	/*

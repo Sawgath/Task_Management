@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import com.Jahan.Task_Management.config.SecurityConfiguration;
 import com.Jahan.Task_Management.helper.LoginHelper;
 import com.Jahan.Task_Management.helper.TaskHelper;
@@ -50,17 +49,19 @@ public class UserManageController {
 	 */
 	@RequestMapping(value="/addUser",method=RequestMethod.POST)
 	public ModelAndView addUser(@ModelAttribute("aUser") UserHelperModel aUser,Model model,RedirectAttributes redir){
-		boolean temp = LoginHelperT.saveUser(aUser);
+		boolean temp =LoginHelperT.checkUniqueNameEmail(aUser.getuserName(),aUser.getemail());
 		ModelAndView modelAndView = new ModelAndView();
-		if(temp && aUser.password.length()>2)
+		if(temp && aUser.password.length()>4)
 		{
+			LoginHelperT.saveUser(aUser);
 			redir.addFlashAttribute("successMessage", "User has been added successfully");
 			modelAndView.setViewName("redirect:ListofUser");
 			return  modelAndView;
 		}
 		else
 		{
-			modelAndView.setViewName("redirect:/ListofUser-error");
+			redir.addFlashAttribute("successMessage", "User name or email already exists.Password length must be atleast 5.");
+			modelAndView.setViewName("redirect:/ListofUser");
 			return modelAndView;
 		}
 	}
@@ -183,29 +184,44 @@ public class UserManageController {
 	 * 	To delete single user.
 	*/
 	@RequestMapping(value="/deleteUser",method=RequestMethod.POST)
-	public ModelAndView deleteUser(Model model,@ModelAttribute("DelUser") String userID,RedirectAttributes redir){
+	public ModelAndView deleteUser(Model model,@ModelAttribute("DelUser") String userID,RedirectAttributes redir,@ModelAttribute("UserSession") UserHelperModel aSessionUser){
 		ModelAndView modelAndView = new ModelAndView();
 		long num=Long.parseLong(userID);
-		LoginHelperT.deleteUser(num);
-		redir.addFlashAttribute("successMessage", "User has been removed successfully");
-		modelAndView.setViewName("redirect:ListofUser");
+		if(aSessionUser.getrole().equals(Role.ADMIN))
+		{
+			LoginHelperT.deleteUser(num);
+			redir.addFlashAttribute("successMessage", "User has been removed successfully");
+			modelAndView.setViewName("redirect:ListofUser");
+		}
+		else
+		{
+			redir.addFlashAttribute("successMessage", "User is not authorized to remove another user.");
+			modelAndView.setViewName("redirect:ListofUser");
+		}
 		return modelAndView;
 	}
 	/*
-	 * 	changeRole
+	 * 	Change role of a user
 	*/
 	@RequestMapping(value="/ChangeRole",method=RequestMethod.POST)
-	public String changeRole(Model model,@ModelAttribute("changeRoleUser") String userID){
+	public String changeRole(Model model,@ModelAttribute("changeRoleUser") String userID,@ModelAttribute("UserSession") UserHelperModel aSessionUser){
 		long num=Long.parseLong(userID);
 		User tempUserUpdate=LoginHelperT.getUserInfoByID(num);
-		UserHelperModel changeRoleUser =new UserHelperModel();
-		changeRoleUser.userId= tempUserUpdate.getuserId();
-		changeRoleUser.setpassword(tempUserUpdate.getpassword());
-		changeRoleUser.setuserName(tempUserUpdate.getuserName());
-		changeRoleUser.active= Integer.toString(tempUserUpdate.getActive());
-		changeRoleUser.setrole(tempUserUpdate.getrole());
-		model.addAttribute("changeRoleUser",changeRoleUser);
-		return "/user-interface/ChangeRole";
+		if(aSessionUser.getrole().equals(Role.ADMIN))
+		{
+			UserHelperModel changeRoleUser =new UserHelperModel();
+			changeRoleUser.userId= tempUserUpdate.getuserId();
+			changeRoleUser.setpassword(tempUserUpdate.getpassword());
+			changeRoleUser.setuserName(tempUserUpdate.getuserName());
+			changeRoleUser.active= Integer.toString(tempUserUpdate.getActive());
+			changeRoleUser.setrole(tempUserUpdate.getrole());
+			model.addAttribute("changeRoleUser",changeRoleUser);
+			return "/user-interface/ChangeRole";
+		}
+		else
+		{
+			return "/login/userlist";
+		}
 	}
 	@RequestMapping(value="/ChangedRole",method=RequestMethod.POST)
 	public ModelAndView changedRole(Model model,@ModelAttribute("changeRoleUser") UserHelperModel aUser){
@@ -213,7 +229,7 @@ public class UserManageController {
 		return new ModelAndView("redirect:/changeRoleList");
 	}
 	/*
-	 * 	changeRoleList
+	 * User Role List
 	*/
 	@RequestMapping(value="/changeRoleList",method=RequestMethod.GET)
 	public String changeRoleList(Model model){
@@ -304,6 +320,4 @@ public class UserManageController {
 	 public ModelAndView handleError(HttpServletRequest request, Exception e)   {
         return new ModelAndView("/error-interface/403");
 	 }
-
 }
-

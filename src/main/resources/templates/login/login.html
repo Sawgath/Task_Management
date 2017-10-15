@@ -27,7 +27,9 @@
 	    <div class="page-header" align="center">
 	        <h1>Login </h1>
 	    </div>
-	    <span th:utext="${successMessage}"></span>
+	    <div  align="center">
+	    <span style="color: gold;" th:utext="${successMessage}"></span>
+	    </div>
 	     <div  align="center">
     		<p th:if="${loginError}" class="error" style="color: red;">Wrong user or password</p>
     		 </div>
