@@ -1,9 +1,11 @@
 package com.Jahan.Task_Management.controller;
 import java.util.ArrayList;
 import java.util.List;
+import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -13,7 +15,6 @@ import com.Jahan.Task_Management.helper.*;
 import com.Jahan.Task_Management.helperModel.*;
 import com.Jahan.Task_Management.model.*;
 import com.Jahan.Task_Management.repo.*;
-
 /*
  * 	ProjectManageController for adding Project's or deleting Project or updating Project info
 */
@@ -25,7 +26,7 @@ public class ProjectManageController {
 	@Autowired
 	ProjectHelper projectHelper;
 	/*
-	 * //For create new project
+	 * For create new project
 	 */
 	@RequestMapping(value="/NewProject",method=RequestMethod.POST)
 	public ModelAndView addNewProject(@ModelAttribute("aProject") ProjectHelperModel aProject,@ModelAttribute("UserSession") UserHelperModel aSessionUser){
@@ -95,7 +96,7 @@ public class ProjectManageController {
 		return new ModelAndView("redirect:/ListofProject");
 	}
 	/*
-	 * //To delete single user.
+	 * To delete single user.
 	 */
 	@RequestMapping(value="/deleteProject",method=RequestMethod.POST)
 	public ModelAndView deleteProject(Model model,@ModelAttribute("delProject") String projectID){
@@ -103,4 +104,11 @@ public class ProjectManageController {
 		projectHelper.DeleteProject(num);
 		return new ModelAndView("redirect:/ListofProject");
 	}
+	/*
+	 * Handle Exception
+	 */
+	@ExceptionHandler(Exception.class)
+	 public ModelAndView handleError(HttpServletRequest request, Exception e)   {
+       return new ModelAndView("/error-interface/403");
+	 }
 }

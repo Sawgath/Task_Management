@@ -1,39 +1,23 @@
 package com.Jahan.Task_Management.controller;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.net.ssl.HttpsURLConnection;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import org.springframework.validation.BindingResult;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
 import org.unbescape.html.HtmlEscape;
-
 import com.Jahan.Task_Management.config.SecurityConfiguration;
 import com.Jahan.Task_Management.helper.LoginHelper;
-import com.Jahan.Task_Management.helperModel.UserHelperModel;
 import com.Jahan.Task_Management.model.Role;
 import com.Jahan.Task_Management.model.User;
 import com.Jahan.Task_Management.repo.UserRepository;
-
-
-
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-
-import javax.net.ssl.HttpsURLConnection;
 /*
 	Test Controller for manipulating user data
 */
@@ -45,9 +29,11 @@ public class webController {
 	LoginHelper LoginHelperT;
 	@Autowired
 	SecurityConfiguration SecurityConfigurationT;
+	/*
+     * Built-in save function
+     */
 	@RequestMapping("/save")
 	public String process(){
-		
 		BCryptPasswordEncoder aBCryptPasswordEncoder=SecurityConfigurationT.passwordEncoder();
 		userRepository.save(new User("Admin",aBCryptPasswordEncoder.encode("123"),"Admin@yahoo.com",Role.ADMIN));
 		userRepository.save(new User("Admin2",aBCryptPasswordEncoder.encode("123"),"admin2@yahoo.com",Role.ADMIN));
@@ -58,6 +44,9 @@ public class webController {
 		userRepository.save(new User("Mac",aBCryptPasswordEncoder.encode("123"),"sawjahan@gmail.com",Role.STAFF));
 		return "Done";
 	}
+	/*
+     * call  User registration view
+     */
 	@RequestMapping("/registration")
 	public ModelAndView registration(Model model){
 		
@@ -67,7 +56,9 @@ public class webController {
 		modelAndView.setViewName("/user-interface/registration");
 		return modelAndView;
 	}
-	
+	/*
+     * Saving User registration 
+     */
 	@RequestMapping(value = "/registration", method = RequestMethod.POST)
 	public ModelAndView createNewUser(@Valid User user, BindingResult bindingResult) {
 	 		ModelAndView modelAndView = new ModelAndView();
@@ -88,7 +79,9 @@ public class webController {
 	 		}
 	 		return modelAndView;
 	}
-	
+	/*
+     * Get all user from data base.
+     */
 	@RequestMapping(value="/findall",method=RequestMethod.GET)
 	public String findAll(Model model){
 		List<User> userList= new ArrayList<User>();
@@ -99,26 +92,22 @@ public class webController {
 		model.addAttribute("UserList",userList);
 		return "/login/allusers";
 	}
-
-	
-    /** Error page. */
+	/*
+     * Error page.
+     */
     @RequestMapping("/403.html")
     public String forbidden() {
         return "/error-interface/403";
     }
-    
     /*
      * testing api
      */
-    
     @RequestMapping("/API")
     public void APIFunction() {
-    	
-  
     }
-    
-
-/** Error page. */
+    /*
+     * Error page.
+     */
     @RequestMapping("/error.html")
     public String error(HttpServletRequest request, Model model) {
         model.addAttribute("errorCode", "Error " + request.getAttribute("javax.servlet.error.status_code"));
@@ -132,6 +121,13 @@ public class webController {
         errorMessage.append("</ul>");
         model.addAttribute("errorMessage", errorMessage.toString());
         return "/error-interface/error";
-    }
+    } 
+    /*
+     * Exception handle.
+     */
+    @ExceptionHandler(Exception.class)
+	 public ModelAndView handleError(HttpServletRequest request, Exception e)   {
+       return new ModelAndView("/error-interface/403");
+	 }
     
 }

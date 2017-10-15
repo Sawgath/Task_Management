@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import com.Jahan.Task_Management.helperModel.*;
 import com.Jahan.Task_Management.model.*;
-import com.Jahan.Task_Management.model.Task;
 import com.Jahan.Task_Management.repo.TaskRepository;
 
 @Component
@@ -19,8 +18,7 @@ public void DeleteTask(long id){
 	{	
 		TaskRepositoryT.delete(id);
 	}
-}
-	
+}	
 public void saveTask(TaskHelperModel aTaskHelperModel){
 		
 		if(aTaskHelperModel.projectId!=0 && !aTaskHelperModel.taskName.equals("") && !aTaskHelperModel.taskStartTime.equals("") && !aTaskHelperModel.taskEndTime.equals("")) 
@@ -41,4 +39,3 @@ public void saveTask(TaskHelperModel aTaskHelperModel){
 		}
 	}
 }
-

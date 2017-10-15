@@ -1,5 +1,4 @@
 package com.Jahan.Task_Management.helperModel;
-import java.util.Date;
 
 public class UserTaskRelHelperModel {
 	public long userTaskRelId;
@@ -33,7 +32,6 @@ public class UserTaskRelHelperModel {
 	public long getProjectId() {
 		return projectId;
 	}
-	
 	public void setProjectId(long projectId) {
 		this.projectId = projectId;
 	}

@@ -1,7 +1,4 @@
 package com.Jahan.Task_Management.helperModel;
-
-import javax.persistence.Column;
-
 import com.Jahan.Task_Management.model.Priority;
 
 public class TaskHelperModel {	
@@ -15,10 +12,7 @@ public class TaskHelperModel {
 	public String taskEndTime;
 	public Priority taskPriority;
 	public String usingFlag;
-	public long createdByuserId;
-	
-	
-	
+	public long createdByuserId;	
 	public TaskHelperModel() 
 	{
 	}
@@ -89,15 +83,12 @@ public class TaskHelperModel {
 	public String getUsingFlag() {
 		return usingFlag;
 	}
-
 	public void setUsingFlag(String usingFlag) {
 		this.usingFlag = usingFlag;
 	}
-
 	public long getCreatedByuserId() {
 		return createdByuserId;
 	}
-
 	public void setCreatedByuserId(long createdByuserId) {
 		this.createdByuserId = createdByuserId;
 	}

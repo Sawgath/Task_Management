@@ -1,6 +1,5 @@
 package com.Jahan.Task_Management.controller;
 import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,10 +10,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
-
-import com.Jahan.Task_Management.helper.LoginHelper;
-import com.Jahan.Task_Management.helperModel.UserHelperModel;
-import com.Jahan.Task_Management.model.User;
+import com.Jahan.Task_Management.helper.*;
+import com.Jahan.Task_Management.helperModel.*;
 import com.Jahan.Task_Management.repo.UserRepository;
 /*
  * 	Login Controller for checking and validation of user input

@@ -1,10 +1,7 @@
 package com.Jahan.Task_Management.controller;
-import java.util.Map;
-import java.util.Optional;
 import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -23,7 +20,6 @@ import com.Jahan.Task_Management.model.*;
 import com.Jahan.Task_Management.repo.UserRepository;
 @Controller
 public class PasswordController {
-	
 	@Autowired
 	private EmailService emailService;
 	@Autowired
@@ -32,76 +28,69 @@ public class PasswordController {
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 	@Autowired
 	UserRepository UserRepositoryT;
-	
-	// Display forgotPassword page
+	/*
+	 * Display forgotPassword page
+	 */
 	@RequestMapping(value = "/forgot", method = RequestMethod.GET)
 	public ModelAndView displayForgotPasswordPage(Model model) {
-
 		return new ModelAndView("/passwordreset-interface/forgotpassword");
     }
-    
-    // Process form submission from forgotPassword page
+	/*
+	 * Process form submission from forgotPassword page
+	 */
 	@RequestMapping(value = "/forgot", method = RequestMethod.POST)
 	public ModelAndView processForgotPasswordForm(ModelAndView modelAndView, @RequestParam("email") String userEmail, HttpServletRequest request) {
-
 		// Lookup user in database by e-mail
 		User aUser = UserRepositoryT.findByEmail(userEmail);
-
-		if (aUser==null) {
+		if (aUser==null) 
+		{
 			modelAndView.addObject("errorMessage", "We didn't find an account for that e-mail address.");
 		} 
-		else {
-			
+		else 
+		{
 			// Generate random 36-character string token for reset password 
 			String randompassword=UUID.randomUUID().toString();
-
-			//aUser.setpassword(bCryptPasswordEncoder.encode(randompassword));
 			// Save token to database
 			LoginHelperT.savetokenUser(userEmail, randompassword);
-
 			String appUrl = request.getScheme() + "://" + request.getServerName();
-			
 			// Email message
 			SimpleMailMessage passwordResetEmail = new SimpleMailMessage();
 			passwordResetEmail.setFrom("sawjahan4@gmail.com");
 			passwordResetEmail.setTo(aUser.getemail());
 			passwordResetEmail.setSubject("Password Reset");
-			//passwordResetEmail.setText("You have reset your password, New token has given below:\n" + randompassword+"\n Please click here to change your password"+appUrl);
 			passwordResetEmail.setText("To reset your password, click the link below:\n" + appUrl+":5000"
 					+ "/reset?token=" + aUser.getResetToken());
 			emailService.sendEmail(passwordResetEmail);
-
 			// Add success message to view
 			modelAndView.addObject("successMessage", "A password reset link has been sent to " + userEmail);
 		}
-
 		modelAndView.setViewName("/passwordreset-interface/forgotPassword");
 		return modelAndView;
-
 	}
-
-	// Display form to reset password
+	/*
+	 * Display form to reset password
+	 */
 	@RequestMapping(value = "/reset", method = RequestMethod.GET)
 	public ModelAndView displayResetPasswordPage(ModelAndView modelAndView, @RequestParam("token") String token) {
-		
 		User aUser = UserRepositoryT.findUserByResetToken(token);
-
-		if (aUser!=null) { // Token found in DB
+		if (aUser!=null) 
+		{ // Token found in DB
 			PasswordResetHelperModel aPasswordResetHelperModel= new PasswordResetHelperModel();
 			aPasswordResetHelperModel.aUser=aUser;
 			aPasswordResetHelperModel.setResetToken(token);
 			modelAndView.addObject("aPasswordResetHelperModel", aPasswordResetHelperModel);
-		} else { // Token not found in DB
+		} else 
+		{ // Token not found in DB
 			modelAndView.addObject("errorMessage", "Oops!  This is an invalid password reset link.");
 		}
 		modelAndView.setViewName("/passwordreset-interface/resetPassword");
 		return modelAndView;
 	}
-
-	// Process reset password form
+	/*
+	 * Process reset password form
+	 */
 	@RequestMapping(value = "/reset", method = RequestMethod.POST)
 	public ModelAndView setNewPassword(ModelAndView modelAndView, @ModelAttribute("aPasswordResetHelperModel") PasswordResetHelperModel aPasswordResetHelperModel,RedirectAttributes redir) {
-
 		// Find the user associated with the reset token
 		User aUser = UserRepositoryT.findUserByResetToken(aPasswordResetHelperModel.getResetToken());
 		String password1=aPasswordResetHelperModel.newPassword;
@@ -109,27 +98,23 @@ public class PasswordController {
 		if(password1.equals(password2) && password1.length()>4)
 		{
 			// This should always be non-null but we check just in case
-			if (aUser!=null) {
-				
-				User resetUser = aUser; 
-	            
+			if (aUser!=null) 
+			{
+				User resetUser = aUser;    
 				// Set new password    
 	            resetUser.setpassword(bCryptPasswordEncoder.encode(aPasswordResetHelperModel.newPassword));
-	           
 				// Set the reset token to null so it cannot be used again
 				resetUser.setResetToken(null);
-	
 				// Save user
 				UserRepositoryT.save(resetUser);
-	
 				// In order to set a model attribute on a redirect, we must use
 				// RedirectAttributes
 				redir.addFlashAttribute("successMessage", "You have successfully reset your password.  You may now login.");
-	
 				modelAndView.setViewName("redirect:Login");
 				return modelAndView;
-				
-			} else {
+			} 
+			else 
+			{
 				modelAndView.addObject("errorMessage", "Oops!  This is an invalid password reset link ");
 				modelAndView.setViewName("/passwordreset-interface/resetPassword");	
 			}
@@ -139,11 +124,11 @@ public class PasswordController {
 			modelAndView.addObject("errorMessage", "Oops!  Password mismatch or password length should be atleast 5");
 			modelAndView.setViewName("/passwordreset-interface/resetPassword");	
 		}
-		
 		return modelAndView;
-  }
-   
-    // Going to reset page without a token redirects to login page
+	}
+	/*
+	 * Going to reset page without a token redirects to login page
+	 */
 	@ExceptionHandler(MissingServletRequestParameterException.class)
 	public ModelAndView handleMissingParams(MissingServletRequestParameterException ex) {
 		return new ModelAndView("redirect:Login");

@@ -13,18 +13,12 @@ public class PasswordResetHelperModel {
 	public String getResetToken() {
 		return resetToken;
 	}
-
-
 	public void setResetToken(String resetToken) {
 		this.resetToken = resetToken;
 	}
-
-
 	public PasswordResetHelperModel() {
 		
-	}
-	
-	
+	}	
 	public String getOldPassword() {
 		return oldPassword;
 	}

@@ -1,11 +1,7 @@
 package com.Jahan.Task_Management.helperModel;
-
-import javax.persistence.Column;
-
 import com.Jahan.Task_Management.model.Project;
 
-public class ProjectHelperModel {
-	
+public class ProjectHelperModel {	
 	public long projectId;
 	public String projectName;
 	public String projectDescription;
@@ -13,7 +9,6 @@ public class ProjectHelperModel {
 	public String projectEndTime;
 	public String usingFlag;
 	public long createdByuserId;
-	
 	public ProjectHelperModel() 
 	{
 	}
@@ -23,7 +18,6 @@ public class ProjectHelperModel {
 		this.projectStartTime=projectStartTime;
 		this.projectEndTime=projectEndTime;
 	}
-	
 	public ProjectHelperModel(Project aProject) {
 		this.projectId=aProject.getProjectId();
 		this.projectName = aProject.getProjectName();
@@ -77,5 +71,4 @@ public class ProjectHelperModel {
 	public void setCreatedByuserId(long createdByuserId) {
 		this.createdByuserId = createdByuserId;
 	}
-
 }

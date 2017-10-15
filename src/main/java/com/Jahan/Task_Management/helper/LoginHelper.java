@@ -2,13 +2,10 @@ package com.Jahan.Task_Management.helper;
 import com.Jahan.Task_Management.model.Role;
 import com.Jahan.Task_Management.model.User;
 import com.Jahan.Task_Management.repo.UserRepository;
-
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import com.Jahan.Task_Management.config.SecurityConfiguration;
 import com.Jahan.Task_Management.helperModel.UserHelperModel;

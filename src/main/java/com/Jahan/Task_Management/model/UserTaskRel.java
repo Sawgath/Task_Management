@@ -11,7 +11,9 @@ import javax.persistence.Table;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.Jahan.Task_Management.helperModel.UserTaskRelHelperModel;
-
+/*
+ * Entity model for the relation between task and user of TaskManagementDb (fact table)
+ */
 @Entity
 @Table(name = "UserTaskRel")
 public class UserTaskRel implements Serializable {

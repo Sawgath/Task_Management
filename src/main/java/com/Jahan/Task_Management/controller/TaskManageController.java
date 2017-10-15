@@ -1,9 +1,11 @@
 package com.Jahan.Task_Management.controller;
 import java.util.ArrayList;
 import java.util.List;
+import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -17,7 +19,6 @@ import com.Jahan.Task_Management.repo.*;
 @SessionAttributes("UserSession")
 @Controller
 public class TaskManageController {
-
 	@Autowired
 	TaskHelper TaskHelperT;
 	@Autowired
@@ -45,7 +46,6 @@ public class TaskManageController {
 	@RequestMapping(value="/CreateTask",method=RequestMethod.POST)
 	public String newProjectForm(Model model){
 		TaskHelperModel aTask=new TaskHelperModel();
-		Priority aPriority;
 		List<Project> projectList= new ArrayList<Project>();
 		for(Project tempProject : ProjectRepositoryT.findAll()){
 			projectList.add(tempProject);
@@ -55,7 +55,7 @@ public class TaskManageController {
 		return "/task-interface/createtask";
 	}
 	/*
-	 * //For getting list of project
+	 * For getting list of project
 	 */
 	@RequestMapping(value="/ListofTask",method=RequestMethod.GET)
 	public String findAllTask(Model model, @ModelAttribute("UserSession") UserHelperModel aSessionUser){
@@ -87,7 +87,7 @@ public class TaskManageController {
 		return "/task-interface/listoftask";
 	}
 	/*
-	 * //To delete single task.
+	 * To delete single task.
 	*/
 	@RequestMapping(value="/deleteTask",method=RequestMethod.POST)
 	public ModelAndView deleteTask(Model model,@ModelAttribute("delTask") String delTask){
@@ -117,8 +117,7 @@ public class TaskManageController {
 			else 
 			{
 				taskList.add(tempProject);	
-			}
-			
+			}	
 		}
 		List<User> userList= new ArrayList<User>();
 		for(User cust : UserRepositoryT.findAll()){
@@ -169,7 +168,6 @@ public class TaskManageController {
 	}
 	@RequestMapping(value="/TaskAssign",method=RequestMethod.POST)
 	public String AssignedTask(Model model,@ModelAttribute("aUserTaskRelHelperModel") UserTaskRelHelperModel aUserTaskRelHelperModel){
-		
 		UserTaskRelHelperT.saveUserTaskRel(aUserTaskRelHelperModel);
 		return "/task-interface/assigntask";
 	}
@@ -179,10 +177,7 @@ public class TaskManageController {
 	@RequestMapping(value="/TaskAssignlist",method=RequestMethod.GET)
 	public String taskAssignList(Model model ,@ModelAttribute("UserSession") UserHelperModel aSessionUser){
 		List<DetailAssignTaskHelperModel> datList= new ArrayList<DetailAssignTaskHelperModel>();
-		
-		List<UserTaskRel> userTaskRelList= new ArrayList<UserTaskRel>();
 		for(UserTaskRel tempuserTaskRel : UserTaskRelRepositoryT.findAll()){
-		
 			DetailAssignTaskHelperModel aDetailAssignTaskHelperModel=new DetailAssignTaskHelperModel();
 			aDetailAssignTaskHelperModel.aUser=UserRepositoryT.findOne(tempuserTaskRel.getUserId());
 			aDetailAssignTaskHelperModel.aProject=ProjectRepositoryT.findOne(tempuserTaskRel.getProjectId());
@@ -213,5 +208,12 @@ public class TaskManageController {
 		model.addAttribute("datList",datList);
 		return "/task-interface/assigntasklist";
 	}
+	/*
+	 * Exception handle 
+	*/
+	@ExceptionHandler(Exception.class)
+	 public ModelAndView handleError(HttpServletRequest request, Exception e)   {
+       return new ModelAndView("/error-interface/403");
+	 }
 
 }
