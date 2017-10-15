@@ -188,24 +188,26 @@ public class TaskManageController {
 			aDetailAssignTaskHelperModel.aProject=ProjectRepositoryT.findOne(tempuserTaskRel.getProjectId());
 			aDetailAssignTaskHelperModel.aTask=TaskRepositoryT.findOne(tempuserTaskRel.getTaskId());
 			aDetailAssignTaskHelperModel.aUserTaskRel=tempuserTaskRel;
-			
-			if(aSessionUser.getrole().equals(Role.MANAGER))
+			if(aDetailAssignTaskHelperModel.aUser!=null && aDetailAssignTaskHelperModel.aProject!=null && aDetailAssignTaskHelperModel.aTask!=null)
 			{
-				if(aSessionUser.userId==aDetailAssignTaskHelperModel.getaProject().createdByuserId)
+				if(aSessionUser.getrole().equals(Role.MANAGER))
 				{
-					datList.add(aDetailAssignTaskHelperModel);
+					if(aSessionUser.userId==aDetailAssignTaskHelperModel.getaProject().createdByuserId)
+					{
+						datList.add(aDetailAssignTaskHelperModel);
+					}
 				}
-			}
-			else if(aSessionUser.getrole().equals(Role.STAFF))
-			{
-				if(aSessionUser.userId==aDetailAssignTaskHelperModel.getaUserTaskRel().getUserId())
+				else if(aSessionUser.getrole().equals(Role.STAFF))
 				{
-					datList.add(aDetailAssignTaskHelperModel);
+					if(aSessionUser.userId==aDetailAssignTaskHelperModel.getaUserTaskRel().getUserId())
+					{
+						datList.add(aDetailAssignTaskHelperModel);
+					}
 				}
-			}
-			else 
-			{
-				datList.add(aDetailAssignTaskHelperModel);	
+				else 
+				{
+					datList.add(aDetailAssignTaskHelperModel);	
+				}
 			}
 		}
 		model.addAttribute("datList",datList);

@@ -11,54 +11,58 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-md-10 col-md-offset-1">
-				<form autocomplete="off" action="#" th:action="@{/updatedUser}"
-					th:object="${UserUpdate}" method="post" class="form-horizontal"
-					role="form">
+				<form autocomplete="off" action="#" method="post" class="form-horizontal" >
 					<h2>Update User</h2>
+					<p th:if="${Error}" class="error" style="color: red;">Same password or Password mismatch. Number of character in Password  must be atleast 3 </p>
+					
 					<div class="form-group">
-						<div class="col-sm-9">
-						<input type="text" style="visibility: hidden" th:field="*{userId}" placeholder="userName"
-								class="form-control" /> 
-						</div>
-					</div>
-					<div class="form-group">
-					<label th:if="${#fields.hasErrors('userName')}" th:errors="*{userName}" class="validation-message"></label>
 					<label class="col-sm-2 control-label">User Name :</label>
 						<div class="col-sm-9">
-						<input type="text" th:field="*{userName}" placeholder="userName" class="form-control" disabled/> 
+						<input type="text" th:field="${UserUpdate.userName}" placeholder="userName" class="form-control" disabled="disabled"/> 
 						</div>
 					</div>
+				</form>
+				<form  action="#" th:action="@{/updatedUser}" th:object="${tempPassword}" method="post" class="form-horizontal" role="form">
 					<div class="form-group">
-					<label class="col-sm-2 control-label">Password :</label>
+					<label class="col-sm-2 control-label">Old Password :</label>
 						<div class="col-sm-9">
-							<input type="text" th:field="*{password}" placeholder="Email"
-								class="form-control" /> 
-								<label th:if="${#fields.hasErrors('password')}" th:errors="*{password}"
-								class="validation-message"></label>
+							<input type="text" th:field="*{oldPassword}" placeholder="oldPassword" class="form-control" /> 
 						</div>
 					</div>
 					<div class="form-group">
-					<label class="col-sm-2 control-label">Active :</label>
-						<div class="col-sm-1 control-label">
-							<input type="radio" value="1" th:field="*{active}" />
-						</div>
-						<label class="col-sm-2 control-label">Inactive :</label>
-						<div class="col-sm-1 control-label">
-							<input type="radio" value="0" th:field="*{active}"/>
+					<label class="col-sm-2 control-label">New Password :</label>
+						<div class="col-sm-9">
+							<input type="text" th:field="*{newPassword}" placeholder="newPassword" class="form-control" /> 
 						</div>
 					</div>
 
 					<div class="form-group">
-						<div class="col-sm-9">
-							<button type="submit" class="btn btn-primary btn-block">Update User</button>
+					<div class="col-sm-4" align="center">
+							
 						</div>
-					</div>
-					
-					<span th:utext="${successMessage}"></span>
-					
+						<div class="col-sm-4" align="center">
+							<button type="submit" class="btn btn-primary btn-lg" style="width: 300px;">Update User</button>
+						</div>
+					</div>	
 					
 				</form>
 			</div>
+			<br></br>
+         	<br></br>
+			<br></br>
+         	<br></br>
+         	<div align="center">  
+         	<table>
+         	<tr align="center">
+	        </tr>
+         	<tr align="center">
+	            <td><form class="form-horizontal" th:action="@{/UI}"  method="get">
+	            <input type="submit" class="btn btn-primary btn-lg" style="width: 800px;" value="Go back"/>
+	            </form>
+	            </td>
+	        </tr>
+	        </table>
+	        </div>  
 		</div>
 	</div>
 

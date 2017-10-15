@@ -2,6 +2,8 @@ package com.Jahan.Task_Management.controller;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -9,10 +11,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.Jahan.Task_Management.config.SecurityConfiguration;
 import com.Jahan.Task_Management.helper.LoginHelper;
 import com.Jahan.Task_Management.helper.TaskHelper;
 import com.Jahan.Task_Management.helper.UserTaskRelHelper;
 import com.Jahan.Task_Management.helperModel.DetailAssignTaskHelperModel;
+import com.Jahan.Task_Management.helperModel.PasswordChngHelperModel;
 import com.Jahan.Task_Management.helperModel.UserHelperModel;
 import com.Jahan.Task_Management.model.Role;
 import com.Jahan.Task_Management.model.User;
@@ -38,6 +43,8 @@ public class UserManageController {
 	UserRepository UserRepositoryT;
 	@Autowired
 	UserTaskRelHelper UserTaskRelHelperT;
+	@Autowired
+	private SecurityConfiguration SecurityConfigurationT;
 	//To add single user.
 	@RequestMapping(value="/addUser",method=RequestMethod.POST)
 	public ModelAndView addUser(@ModelAttribute("aUser") UserHelperModel aUser,Model model){
@@ -47,20 +54,27 @@ public class UserManageController {
 	}
 	//For getting list of User
 	@RequestMapping(value="/ListofUser",method=RequestMethod.GET)
-	public String findAll(Model model){
-		String str="";
-		String updateUser="";
-		UserHelperModel aUser=new UserHelperModel();
-		model.addAttribute("aUser",aUser);
-		model.addAttribute("DelUser",str);
-		model.addAttribute("updateUser",updateUser);
-		List<User> userList= new ArrayList<User>();
-		model.addAttribute("Error",false);
-		for(User cust : UserRepositoryT.findAll()){
-			userList.add(cust);
+	public String findAll(Model model ,@ModelAttribute("UserSession") UserHelperModel aSessionUser){
+		if(aSessionUser.getrole().equals(Role.ADMIN))
+		{
+			String str="";
+			String updateUser="";
+			UserHelperModel aUser=new UserHelperModel();
+			model.addAttribute("aUser",aUser);
+			model.addAttribute("DelUser",str);
+			model.addAttribute("updateUser",updateUser);
+			List<User> userList= new ArrayList<User>();
+			model.addAttribute("Error",false);
+			for(User cust : UserRepositoryT.findAll()){
+				userList.add(cust);
+			}
+			model.addAttribute("UserList",userList);
+			return "/login/userlist";
 		}
-		model.addAttribute("UserList",userList);
-		return "/login/userlist";
+		else
+		{
+			return "/error-interface/403";
+		}
 	}
 	@RequestMapping(value="/ListofUser-error",method=RequestMethod.GET)
 	public String findAllError(Model model){
@@ -80,13 +94,13 @@ public class UserManageController {
 	}
 	//For getting user interface
 	@RequestMapping(value="/UI",method=RequestMethod.GET)
-	public String userInterface(Model model, @ModelAttribute("UserSession") UserHelperModel aUser){
-			model.addAttribute("aUser",aUser);
-			if(aUser.getrole().equals(Role.ADMIN))
+	public String userInterface(Model model, @ModelAttribute("UserSession") UserHelperModel aSessionUser){
+			model.addAttribute("aUser",aSessionUser);
+			if(aSessionUser.getrole().equals(Role.ADMIN))
 			{	
 				return "/user-interface/adminmainpage";
 			}
-			else if(aUser.getrole().equals(Role.MANAGER))
+			else if(aSessionUser.getrole().equals(Role.MANAGER))
 			{
 				return "/user-interface/managermainpage";
 			}
@@ -95,24 +109,44 @@ public class UserManageController {
 				return "/user-interface/staffmainpage";
 			}
 	}
-	//To update single user.
-	@RequestMapping(value="/updateUser",method=RequestMethod.POST)
-	public String updateUser(Model model,@ModelAttribute("updateUser") String userID){
-		long num=Long.parseLong(userID);
-		User tempUserUpdate=LoginHelperT.getUserInfoByID(num);
-		UserHelperModel userUpdate =new UserHelperModel();
-		userUpdate.userId= tempUserUpdate.getuserId();
-		userUpdate.setpassword(tempUserUpdate.getpassword());
-		userUpdate.setuserName(tempUserUpdate.getuserName());
-		userUpdate.active= Integer.toString(tempUserUpdate.getActive());
-		
+	//To change password of single user.
+	@RequestMapping(value="/changeUserPassword",method=RequestMethod.GET)
+	public String updateUser(Model model,@ModelAttribute("UserSession") UserHelperModel aSessionUser){
+		UserHelperModel userUpdate =aSessionUser;
+		PasswordChngHelperModel tempPassword=new PasswordChngHelperModel();
 		model.addAttribute("UserUpdate",userUpdate);
+		model.addAttribute("tempPassword",tempPassword);
+		return "/user-interface/updateuser";
+	}
+	@RequestMapping(value="/changeUserPasswordError",method=RequestMethod.GET)
+	public String updateUserError(Model model,@ModelAttribute("UserSession") UserHelperModel aSessionUser){
+		UserHelperModel userUpdate =aSessionUser;
+		PasswordChngHelperModel tempPassword=new PasswordChngHelperModel();
+		model.addAttribute("UserUpdate",userUpdate);
+		model.addAttribute("tempPassword",tempPassword);
+		model.addAttribute("Error",true);
 		return "/user-interface/updateuser";
 	}
 	@RequestMapping(value="/updatedUser",method=RequestMethod.POST)
-	public ModelAndView updatedUser(Model model,@ModelAttribute("UserUpdate") UserHelperModel aUser){
-		LoginHelperT.updateUser(aUser);
-		return new ModelAndView("redirect:/ListofUser");
+	public ModelAndView updatedUser(Model model,@ModelAttribute("UserSession") UserHelperModel aSessionUser,@ModelAttribute("tempPassword") PasswordChngHelperModel tempPassword){
+		BCryptPasswordEncoder aBCryptPasswordEncoder=SecurityConfigurationT.passwordEncoder();
+		String oldPassword =tempPassword.oldPassword;
+		String newPassword =tempPassword.newPassword;
+		if(oldPassword.equals(newPassword))
+		{
+			return new ModelAndView("redirect:/changeUserPasswordError");
+		}
+		else if(aBCryptPasswordEncoder.matches(oldPassword,aSessionUser.getpassword()) && !newPassword.equals("") &&  newPassword.length()>2)
+		{
+			UserHelperModel aUserHelper=new UserHelperModel(UserRepositoryT.findOne(aSessionUser.getuserId()));
+			aUserHelper.setpassword(newPassword);
+			LoginHelperT.updateUser(aUserHelper);
+			return new ModelAndView("redirect:/ListofUser");
+			
+		}else 
+		{
+			return new ModelAndView("redirect:/changeUserPasswordError");
+		}
 	}
 	//To delete single user.
 	@RequestMapping(value="/deleteUser",method=RequestMethod.POST)
