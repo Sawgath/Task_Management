@@ -19,5 +19,5 @@ public interface UserRepository extends CrudRepository<User, Long>{
 	User findByRole(Role role);
 	User findByEmail(String email);
 	User findByuserId(long userId);
-
+	User findUserByResetToken(String resetToken);
 }

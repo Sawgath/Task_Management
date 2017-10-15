@@ -58,6 +58,17 @@ public class LoginHelper {
 		return true;
 	}
 	
+	public boolean checkUniqueEmail(String email){
+			List<User> UserList2 = userRepository.findByemail(email);
+			
+			if(UserList2.size()>0) 
+			{ 
+				return false;			
+			}
+			
+			return true;
+		}
+	
 	public long getUserId(UserHelperModel aUserHelper){
 		BCryptPasswordEncoder aBCryptPasswordEncoder=SecurityConfigurationT.passwordEncoder();
 		
@@ -97,6 +108,16 @@ public class LoginHelper {
 			}
 		}
 		return false;
+	}
+	/*
+	 * save reset password token .
+	 */
+	public boolean savetokenUser(String email, String token){
+
+		User aUser =userRepository.findByEmail(email);
+		aUser.setResetToken(token);
+		userRepository.save(aUser);
+		return true;
 	}
 	
 	public User findUserByEmail(String email) {
