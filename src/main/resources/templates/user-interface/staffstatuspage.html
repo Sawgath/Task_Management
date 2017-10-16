@@ -45,16 +45,16 @@
         <td colspan="1" th:text="(${adat.aUserTaskRel.getTaskCompleted()}==1 )? YES : NO">Task Completed</td>
         </tr>
         <tr align="center" >
-	            <td colspan="2"><form class="form-horizontal" th:action="@{/taskstatusacceptupdate}"  method="post">
-	            <input type="hidden" th:name="aAcceptedflag" th:id="aAcceptedflag"  th:value="${adat.aUserTaskRel.getUserTaskRelId()}" />
-	            <input type="submit" class="btn btn-primary btn-lg" style="width: 250px;" value="Accepted" th:name= "${adat.aUserTaskRel.getUserTaskRelId()}"/>
-	            </form>
-	            </td>
-	             <td colspan="2"><form class="form-horizontal" th:action="@{/taskstatuscompleteupdate}"  method="post">
-	            <input type="hidden" name="aCompletedflag" id="aCompletedflag"  th:value="${adat.aUserTaskRel.getUserTaskRelId()}" />
-	            <input type="submit" class="btn btn-primary btn-lg" style="width: 250px;" value="Completed" th:name= "${adat.aUserTaskRel.getUserTaskRelId()}"/>
-	            </form>
-	            </td>
+            <td colspan="2"><form class="form-horizontal" th:action="@{/taskstatusacceptupdate}"  method="post">
+            <input type="hidden" th:name="aAcceptedflag" th:id="aAcceptedflag"  th:value="${adat.aUserTaskRel.getUserTaskRelId()}" />
+            <input type="submit" class="btn btn-primary btn-lg" style="width: 250px;" value="Accepted" th:name= "${adat.aUserTaskRel.getUserTaskRelId()}"/>
+            </form>
+            </td>
+             <td colspan="2"><form class="form-horizontal" th:action="@{/taskstatuscompleteupdate}"  method="post">
+            <input type="hidden" name="aCompletedflag" id="aCompletedflag"  th:value="${adat.aUserTaskRel.getUserTaskRelId()}" />
+            <input type="submit" class="btn btn-primary btn-lg" style="width: 250px;" value="Completed" th:name= "${adat.aUserTaskRel.getUserTaskRelId()}"/>
+            </form>
+            </td>
 	    </tr >
 	    <tr></tr>
         </table>
@@ -64,16 +64,16 @@
 			<br></br>
          	<br></br>
          	<div align="center">  
-         	<table>
-         	<tr align="center">
-	        </tr>
-         	<tr align="center">
-	            <td><form class="form-horizontal" th:action="@{/UI}"  method="get">
-	            <input type="submit" class="btn btn-primary btn-lg" style="width: 800px;" value="Go back"/>
-	            </form>
-	            </td>
-	        </tr>
-	        </table>
+	         	<table>
+		         	<tr align="center">
+			        </tr>
+		         	<tr align="center">
+			            <td><form class="form-horizontal" th:action="@{/UI}"  method="get">
+			            <input type="submit" class="btn btn-primary btn-lg" style="width: 800px;" value="Go back"/>
+			            </form>
+			            </td>
+			        </tr>
+		        </table>
 	        </div>
 </div>   
 <script src="http://code.jquery.com/jquery-1.12.4.min.js"></script>
