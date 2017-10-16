@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import com.Jahan.Task_Management.helper.*;
 import com.Jahan.Task_Management.helperModel.*;
 import com.Jahan.Task_Management.model.*;
@@ -29,13 +31,20 @@ public class ProjectManageController {
 	 * For create new project
 	 */
 	@RequestMapping(value="/NewProject",method=RequestMethod.POST)
-	public ModelAndView addNewProject(@ModelAttribute("aProject") ProjectHelperModel aProject,@ModelAttribute("UserSession") UserHelperModel aSessionUser){
+	public ModelAndView addNewProject(@ModelAttribute("aProject") ProjectHelperModel aProject,@ModelAttribute("UserSession") UserHelperModel aSessionUser,RedirectAttributes redir){
+		ModelAndView modelAndView = new ModelAndView();
 		if(aProject!=null) 
 		{
 			aProject.setCreatedByuserId(aSessionUser.getuserId());
 			projectHelper.saveProject(aProject);
+			redir.addFlashAttribute("successMessage", "A Project has been added successfully");
 		}
-		return new ModelAndView("redirect:/UI");
+		else 
+		{
+			redir.addFlashAttribute("successMessage", "You have added invalid information to add object. or the project is already exists.");
+		}
+		modelAndView.setViewName("redirect:/UI");
+		return modelAndView;
 	}
 	@RequestMapping(value="/CreateProject",method=RequestMethod.POST)
 	public String newProjectForm(Model model){

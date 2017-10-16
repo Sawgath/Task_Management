@@ -1,4 +1,5 @@
 package com.Jahan.Task_Management.controller;
+import java.io.IOException;
 import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.Jahan.Task_Management.helper.*;
@@ -50,6 +52,11 @@ public class PasswordController {
 		{
 			// Generate random 36-character string token for reset password 
 			String randompassword=UUID.randomUUID().toString();
+			try {
+				String randomtoken=GetAPIFunction();
+			} catch (IOException e) {
+				
+			}
 			// Save token to database
 			LoginHelperT.savetokenUser(userEmail, randompassword);
 			String appUrl = request.getScheme() + "://" + request.getServerName();
@@ -127,6 +134,16 @@ public class PasswordController {
 			modelAndView.setViewName("/passwordreset-interface/resetPassword");	
 		}
 		return modelAndView;
+	}
+	/*
+	 * API function to get unique token
+	 */
+	public String GetAPIFunction () throws IOException {
+		RestTemplate restTemplate = new RestTemplate();
+		String url = "https://api.wordpress.org/secret-key/1.1/salt/";
+        ApiModel aApiModel=new ApiModel();
+        String atoken =restTemplate.getForObject(url, String.class, 200);
+        return atoken;
 	}
 	/*
 	 * Going to reset page without a token redirects to login page

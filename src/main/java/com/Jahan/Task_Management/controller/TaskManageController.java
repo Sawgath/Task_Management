@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import com.Jahan.Task_Management.helper.*;
 import com.Jahan.Task_Management.helperModel.*;
 import com.Jahan.Task_Management.model.*;
@@ -35,13 +37,20 @@ public class TaskManageController {
 	 * create new task
 	 */
 	@RequestMapping(value="/NewTask",method=RequestMethod.POST)
-	public ModelAndView addNewProject(@ModelAttribute("aTask") TaskHelperModel aTask, @ModelAttribute("UserSession") UserHelperModel aSessionUser){
+	public ModelAndView addNewProject(@ModelAttribute("aTask") TaskHelperModel aTask, @ModelAttribute("UserSession") UserHelperModel aSessionUser,RedirectAttributes redir){
+		ModelAndView modelAndView = new ModelAndView();
 		if(aTask!=null) 
 		{
 			aTask.setCreatedByuserId(aSessionUser.getuserId());
 			TaskHelperT.saveTask(aTask);
+			redir.addFlashAttribute("successMessage", "A task has been added successfully");
 		}
-		return new ModelAndView("redirect:/UI");
+		else 
+		{
+			redir.addFlashAttribute("successMessage", "You have added invalid information to add task. or the task is already exists.");
+		}
+		modelAndView.setViewName("redirect:/UI");
+		return modelAndView;
 	}
 	@RequestMapping(value="/CreateTask",method=RequestMethod.POST)
 	public String newProjectForm(Model model){
@@ -96,7 +105,7 @@ public class TaskManageController {
 		return new ModelAndView("redirect:/ListofTask");
 	}
 	/*
-	 * Task Allocated to user
+	 *  view resolver to Task Allocated to user
 	*/
 	@RequestMapping(value="/TaskAssign",method=RequestMethod.GET)
 	public String taskAssign(Model model,@ModelAttribute("UserSession") UserHelperModel aSessionUser){
@@ -167,9 +176,12 @@ public class TaskManageController {
 		return "/task-interface/assigntask";
 	}
 	@RequestMapping(value="/TaskAssign",method=RequestMethod.POST)
-	public String AssignedTask(Model model,@ModelAttribute("aUserTaskRelHelperModel") UserTaskRelHelperModel aUserTaskRelHelperModel){
+	public ModelAndView AssignedTask(Model model,@ModelAttribute("aUserTaskRelHelperModel") UserTaskRelHelperModel aUserTaskRelHelperModel,RedirectAttributes redir){
+		ModelAndView modelAndView = new ModelAndView();
 		UserTaskRelHelperT.saveUserTaskRel(aUserTaskRelHelperModel);
-		return "/task-interface/assigntask";
+		redir.addFlashAttribute("successMessage", "Task has been assgined successfully");
+		modelAndView.setViewName("redirect:TaskAssignlist");
+		return  modelAndView;
 	}
 	/*
 	 * assigned task list

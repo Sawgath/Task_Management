@@ -45,7 +45,7 @@ public class UserManageController {
 	@Autowired
 	private SecurityConfiguration SecurityConfigurationT;
 	/*
-	 * To add single user.
+	 * To add a single user from admin pannel.
 	 */
 	@RequestMapping(value="/addUser",method=RequestMethod.POST)
 	public ModelAndView addUser(@ModelAttribute("aUser") UserHelperModel aUser,Model model,RedirectAttributes redir){
@@ -66,7 +66,7 @@ public class UserManageController {
 		}
 	}
 	/*
-	 *For getting list of User
+	 *For getting list of User. Only admin can access it.
 	 */
 	@RequestMapping(value="/ListofUser",method=RequestMethod.GET)
 	public String findAll(Model model ,@ModelAttribute("UserSession") UserHelperModel aSessionUser){
@@ -91,6 +91,9 @@ public class UserManageController {
 			return "/error-interface/403";
 		}
 	}
+	/*
+	 * Error page for  getting list of User
+	 */
 	@RequestMapping(value="/ListofUser-error",method=RequestMethod.GET)
 	public String findAllError(Model model){
 		String str="";
@@ -108,7 +111,7 @@ public class UserManageController {
 		return "/login/userlist";
 	}
 	/*
-	 *Userwise main page after login
+	 *User-wise main page after login. User interface is redirecting based on role
 	 */
 	@RequestMapping(value="/UI",method=RequestMethod.GET)
 	public String userInterface(Model model, @ModelAttribute("UserSession") UserHelperModel aSessionUser){
@@ -160,24 +163,28 @@ public class UserManageController {
 	 * new password update
 	 */
 	@RequestMapping(value="/updatedUser",method=RequestMethod.POST)
-	public ModelAndView updatedUser(Model model,@ModelAttribute("UserSession") UserHelperModel aSessionUser,@ModelAttribute("tempPassword") PasswordChngHelperModel tempPassword){
+	public ModelAndView updatedUser(Model model,@ModelAttribute("UserSession") UserHelperModel aSessionUser,@ModelAttribute("tempPassword") PasswordChngHelperModel tempPassword,RedirectAttributes redir){
+		ModelAndView modelAndView = new ModelAndView();
 		BCryptPasswordEncoder aBCryptPasswordEncoder=SecurityConfigurationT.passwordEncoder();
 		String oldPassword =tempPassword.oldPassword;
 		String newPassword =tempPassword.newPassword;
 		if(oldPassword.equals(newPassword))
 		{
-			return new ModelAndView("redirect:/changeUserPasswordError");
+			modelAndView.setViewName("redirect:/changeUserPasswordError");
+			return modelAndView;
 		}
 		else if(aBCryptPasswordEncoder.matches(oldPassword,aSessionUser.getpassword()) && !newPassword.equals("") &&  newPassword.length()>2)
 		{
 			UserHelperModel aUserHelper=new UserHelperModel(UserRepositoryT.findOne(aSessionUser.getuserId()));
 			aUserHelper.setpassword(newPassword);
 			LoginHelperT.updateUser(aUserHelper);
-			return new ModelAndView("redirect:/ListofUser");
-			
+			redir.addFlashAttribute("successMessage", "You have updated your password.");
+			modelAndView.setViewName("redirect:/UI");
+			return modelAndView;
 		}else 
 		{
-			return new ModelAndView("redirect:/changeUserPasswordError");
+			modelAndView.setViewName("redirect:/changeUserPasswordError");
+			return modelAndView;
 		}
 	}
 	/*
@@ -204,8 +211,9 @@ public class UserManageController {
 	 * 	Change role of a user
 	*/
 	@RequestMapping(value="/ChangeRole",method=RequestMethod.POST)
-	public String changeRole(Model model,@ModelAttribute("changeRoleUser") String userID,@ModelAttribute("UserSession") UserHelperModel aSessionUser){
+	public ModelAndView changeRole(Model model,@ModelAttribute("changeRoleUser") String userID,@ModelAttribute("UserSession") UserHelperModel aSessionUser, RedirectAttributes redir){
 		long num=Long.parseLong(userID);
+		ModelAndView modelAndView = new ModelAndView();
 		User tempUserUpdate=LoginHelperT.getUserInfoByID(num);
 		if(aSessionUser.getrole().equals(Role.ADMIN))
 		{
@@ -216,11 +224,14 @@ public class UserManageController {
 			changeRoleUser.active= Integer.toString(tempUserUpdate.getActive());
 			changeRoleUser.setrole(tempUserUpdate.getrole());
 			model.addAttribute("changeRoleUser",changeRoleUser);
-			return "/user-interface/ChangeRole";
+			modelAndView.setViewName("/user-interface/changeRole");
+			return modelAndView;
 		}
 		else
 		{
-			return "/login/userlist";
+			redir.addFlashAttribute("successMessage", "User is not authorized to change role of another user.");
+			modelAndView.setViewName("redirect:ListofUser");
+			return modelAndView;
 		}
 	}
 	@RequestMapping(value="/ChangedRole",method=RequestMethod.POST)
@@ -245,7 +256,7 @@ public class UserManageController {
 		return "/user-interface/changerolelist";
 	}
 	/*
-	 * 	changeRoleList taskstatuspage
+	 * 	changeRoleList taskstatus. Detail about the all users.
 	*/
 	@RequestMapping(value="/taskstatuspage",method=RequestMethod.GET)
 	public String taskstatuspage(Model model, @ModelAttribute("UserSession") UserHelperModel aSessionUser){

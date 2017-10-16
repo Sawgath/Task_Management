@@ -14,6 +14,9 @@
     <div class="page-header" align="left">
         <h1>List of Assigned TASK </h1>
     </div>
+    <div align="center">
+    	<span style="color:Gold; font-size: 20" th:utext="${successMessage}"></span>
+    </div>
         <section th:each="adat: ${datList}">
         <table class="table table-striped table-bordered">
         <tr>

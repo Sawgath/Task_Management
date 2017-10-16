@@ -12,10 +12,7 @@
 	<title>Task Management</title>
 </head>
 <body>
-
 <!-- Navbar (sit on top) -->
-
-
 <!-- First Parallax Image with Logo Text -->
 <div class="bgimg-12 w3-display-container w3-opacity-min" id="home">
   <div class="w3-display-middle" style="white-space:nowrap;">
@@ -27,12 +24,12 @@
 	    <div class="page-header" align="center">
 	        <h1>Login </h1>
 	    </div>
-	    <div  align="center">
-	    <span style="color: gold;" th:utext="${successMessage}"></span>
-	    </div>
-	     <div  align="center">
-    		<p th:if="${loginError}" class="error" style="color: red;">Wrong user or password</p>
-    		 </div>
+	    	<div  align="center">
+	    		<span style="color: gold;" th:utext="${successMessage}"></span>
+	    	</div>
+	     	<div  align="center">
+    			<p th:if="${loginError}" class="error" style="color: red;">Wrong user or password</p>
+    		</div>
     		<form class="form-horizontal" action="#" th:action="@{/Login}" th:object="${aUser}" method="post" style="border: medium;border-color: blue;">
                 <div class="form-group" align="center">
                     <label class="col-sm-3 control-label">User Name :</label>
@@ -60,12 +57,12 @@
 	        </div>
 	        <br></br>
          	<div align="center">
-         	<form class="form-horizontal" action="#" th:action="@{/forgot}"  method="get" style="border: medium;border-color: blue;">
+         		<form class="form-horizontal" action="#" th:action="@{/forgot}"  method="get" style="border: medium;border-color: blue;">
 	                <button type="submit" class="btn btn-warning btn-lg" style="width: 600px;">Forget password</button>
 	        </form>
 	        </div>
     </div>
-       <footer class="w3-center w3-black w3-padding-64 w3-opacity w3-hover-opacity-off">
+ <footer class="w3-center w3-black w3-padding-64 w3-opacity w3-hover-opacity-off">
   <a href="#home" class="w3-button w3-light-grey"><i class="fa fa-arrow-up w3-margin-right"></i>To the top</a>
   <div class="w3-xlarge w3-section">
     <i class="fa fa-facebook-official w3-hover-opacity"></i>

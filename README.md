@@ -38,6 +38,8 @@
 
 ###Type variable names
 - A name in the form used for classes followed by the capital letter T (examples: RequestT, FooBarT).
+-or you can add "a" before the class name to create object (examples: aUser, aTask).
+-A name in the form used for list  classes followed by the "list" (examples: userlist, tasklist).
 
 ##HTML
 
