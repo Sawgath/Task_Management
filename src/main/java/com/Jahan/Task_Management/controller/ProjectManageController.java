@@ -1,5 +1,8 @@
 package com.Jahan.Task_Management.controller;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +36,16 @@ public class ProjectManageController {
 	@RequestMapping(value="/NewProject",method=RequestMethod.POST)
 	public ModelAndView addNewProject(@ModelAttribute("aProject") ProjectHelperModel aProject,@ModelAttribute("UserSession") UserHelperModel aSessionUser,RedirectAttributes redir){
 		ModelAndView modelAndView = new ModelAndView();
-		if(aProject!=null) 
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		Date projectStartTime = null;
+		Date projectEndTime = null;
+		try {
+			projectStartTime = formatter.parse(aProject.projectStartTime);
+			projectEndTime = formatter.parse(aProject.projectEndTime);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		if(aProject!=null  && (projectEndTime.compareTo(projectStartTime) > 0)) 
 		{
 			aProject.setCreatedByuserId(aSessionUser.getuserId());
 			projectHelper.saveProject(aProject);
@@ -41,7 +53,7 @@ public class ProjectManageController {
 		}
 		else 
 		{
-			redir.addFlashAttribute("successMessage", "You have added invalid information to add object. or the project is already exists.");
+			redir.addFlashAttribute("successMessage", "You have added invalid information to add object. or the project is already exists.You have to assign minimum one day for creating project.");
 		}
 		modelAndView.setViewName("redirect:/UI");
 		return modelAndView;
@@ -94,8 +106,6 @@ public class ProjectManageController {
 		Project aProject = new Project();
 		aProject = projectHelper.getProjectbyID(num);
 		ProjectHelperModel aProjectHelperModel= new ProjectHelperModel(aProject);
-		//DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-		//Date date = new Date();
 		model.addAttribute("aProjectHelperModel",aProjectHelperModel);
 		return "/project-interface/updateproject";
 	}

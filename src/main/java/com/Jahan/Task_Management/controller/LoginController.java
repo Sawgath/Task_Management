@@ -23,6 +23,9 @@ public class LoginController {
 	UserRepository UserRepositoryT;
 	@Autowired
 	LoginHelper LoginHelperT;
+	/*  
+	 * View for home page 
+	 */
 	@RequestMapping(value= {"/", "/home"},method=RequestMethod.GET)
 	public String indexPage(){
 		// return view of the login page.
@@ -31,11 +34,12 @@ public class LoginController {
 	/* test */
 	@RequestMapping(value= {"/{accountNumber}"},method=RequestMethod.GET)
 	public String indexPage2(@PathVariable final int accountNumber){
-		
 		// return view of the login page.
 		return "public number "+accountNumber;
 	}
-	/* Login form with error. */
+	/* 
+	 * Login form with error.
+	 */
 	@RequestMapping(value="/Login",method=RequestMethod.GET)
 	public String Login(Model model){
 		UserHelperModel aUser=new UserHelperModel();
@@ -43,7 +47,9 @@ public class LoginController {
 		// return view of the login page.
 		return "/login/login";
 	}
-	/* Login form  */
+	/*  
+	 * Login form 
+	 */
 	@RequestMapping(value="/Login",method=RequestMethod.POST)
 	public ModelAndView process(Model model, @ModelAttribute("aUser") UserHelperModel aUser){
 		String aText="";
@@ -76,7 +82,7 @@ public class LoginController {
         return "/login/login";
     }
     /* 
-	 * Logout  
+	 * Logout. redirect to login page
 	 */
     @RequestMapping(value="/Logout" ,method=RequestMethod.GET)
     public ModelAndView Logout(Model model, HttpSession session, @ModelAttribute("UserSession") UserHelperModel aSessionUser,final SessionStatus status) {

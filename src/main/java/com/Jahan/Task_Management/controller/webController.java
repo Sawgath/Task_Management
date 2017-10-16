@@ -100,12 +100,6 @@ public class webController {
         return "/error-interface/403";
     }
     /*
-     * testing api
-     */
-    @RequestMapping("/API")
-    public void APIFunction() {
-    }
-    /*
      * Error page.
      */
     @RequestMapping("/error.html")

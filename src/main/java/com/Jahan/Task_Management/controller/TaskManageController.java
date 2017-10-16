@@ -1,5 +1,8 @@
 package com.Jahan.Task_Management.controller;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +42,16 @@ public class TaskManageController {
 	@RequestMapping(value="/NewTask",method=RequestMethod.POST)
 	public ModelAndView addNewProject(@ModelAttribute("aTask") TaskHelperModel aTask, @ModelAttribute("UserSession") UserHelperModel aSessionUser,RedirectAttributes redir){
 		ModelAndView modelAndView = new ModelAndView();
-		if(aTask!=null) 
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		Date taskStartTime = null;
+		Date taskEndTime = null;
+		try {
+			taskStartTime = formatter.parse(aTask.taskStartTime);
+			taskEndTime = formatter.parse(aTask.taskEndTime);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		if(aTask!=null && (taskEndTime.compareTo(taskStartTime) > 0)) 
 		{
 			aTask.setCreatedByuserId(aSessionUser.getuserId());
 			TaskHelperT.saveTask(aTask);
@@ -47,7 +59,7 @@ public class TaskManageController {
 		}
 		else 
 		{
-			redir.addFlashAttribute("successMessage", "You have added invalid information to add task. or the task is already exists.");
+			redir.addFlashAttribute("successMessage", "You have added invalid information to add task. or the task is already exists.You have to assign minimum one day for creating task.");
 		}
 		modelAndView.setViewName("redirect:/UI");
 		return modelAndView;
@@ -175,6 +187,9 @@ public class TaskManageController {
 		model.addAttribute("taskList",taskList);
 		return "/task-interface/assigntask";
 	}
+	/*
+	 * Saving assigned task to DB
+	*/
 	@RequestMapping(value="/TaskAssign",method=RequestMethod.POST)
 	public ModelAndView AssignedTask(Model model,@ModelAttribute("aUserTaskRelHelperModel") UserTaskRelHelperModel aUserTaskRelHelperModel,RedirectAttributes redir){
 		ModelAndView modelAndView = new ModelAndView();

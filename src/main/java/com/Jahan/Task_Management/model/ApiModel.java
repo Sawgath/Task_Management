@@ -6,5 +6,4 @@ public class ApiModel {
 	public String client="referrer";
 	public String referrer="http://myserver/mywebapp";
 	public String expiration="100";
-
 }

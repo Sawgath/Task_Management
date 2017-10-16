@@ -69,7 +69,6 @@ public class PasswordController {
 					+ "/reset?token=" + aUser.getResetToken());
 			emailService.sendEmail(passwordResetEmail);
 			// Add success message to view
-			//modelAndView.addObject("successMessage", "A password reset link has been sent to " + userEmail);
 			redir.addFlashAttribute("successMessage", "A password reset link has been sent to " + userEmail);
 			
 		}
