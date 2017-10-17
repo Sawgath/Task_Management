@@ -3,7 +3,7 @@ ADMIN
 -Username: Admin password- 123
 Manager
 -Username: Boss password- 123
-ADMIN
+Staff
 -Username: Creep1 password -123
 #Coding convention:
 ##JAVA
