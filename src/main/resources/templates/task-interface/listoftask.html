@@ -34,12 +34,6 @@
             <td th:text="${aTaskT.getTaskStartTime()}">Start Date</td>
             <td th:text="${aTaskT.getTaskEndTime()}">end Date</td>
             <td>
-            <div class="row-sm-10">
-            <form class="form-horizontal" action="#" th:action="@{/}" method="post">
-            <input type="hidden" name="upTask" id="upTask"  th:value="${aTaskT.getTaskId()}" />
-            <input type="submit" class="btn btn-default" value="Update" th:name= "${aTaskT.getTaskId()}"/>
-            </form>
-            </div>
             </td>
             <td>
             <div class="row-sm-10">

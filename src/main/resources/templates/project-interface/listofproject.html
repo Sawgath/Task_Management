@@ -39,7 +39,7 @@
             </td>
             <td>
             <div class="row-sm-10">
-            <form class="form-horizontal" action="http://localhost:8080/deleteProject" method="post">
+            <form class="form-horizontal" th:action="@{/deleteProject}" method="post">
             <input type="hidden" name="delProject" id="delProject"  th:value="${Project.getProjectId()}" />
             <input type="submit" class="btn btn-default" value="Delete" th:name= "${Project.getProjectId()}"/>
             </form>

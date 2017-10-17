@@ -132,13 +132,13 @@ public class LoginHelper {
 	}
 	
 	public void updateUser(UserHelperModel user) {	
-			BCryptPasswordEncoder aBCryptPasswordEncoder=SecurityConfigurationT.passwordEncoder();
-	 		user.setpassword(aBCryptPasswordEncoder.encode(user.getpassword()));
-	 		User tempUser=userRepository.findOne(user.getuserId());
-	 		tempUser.setpassword(user.getpassword());
-	 		tempUser.setuserName(user.getuserName());
-	 		tempUser.setActive(Integer.parseInt(user.active));
-	 		userRepository.save(tempUser);
+		BCryptPasswordEncoder aBCryptPasswordEncoder=SecurityConfigurationT.passwordEncoder();
+ 		user.setpassword(aBCryptPasswordEncoder.encode(user.getpassword()));
+ 		User tempUser=userRepository.findOne(user.getuserId());
+ 		tempUser.setpassword(user.getpassword());
+ 		tempUser.setuserName(user.getuserName());
+ 		tempUser.setActive(Integer.parseInt(user.active));
+ 		userRepository.save(tempUser);
 	}
 	
 	public void updateForChangeUserRole(UserHelperModel user) {	

@@ -224,7 +224,7 @@ public class UserManageController {
 			changeRoleUser.active= Integer.toString(tempUserUpdate.getActive());
 			changeRoleUser.setrole(tempUserUpdate.getrole());
 			model.addAttribute("changeRoleUser",changeRoleUser);
-			modelAndView.setViewName("/user-interface/changeRole");
+			modelAndView.setViewName("/user-interface/changerole");
 			return modelAndView;
 		}
 		else
